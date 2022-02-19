@@ -4,3 +4,133 @@ body {
 p {
   background-color: aquamarine;
 }
+
+main {
+  border: solid 15px blue;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@keyframes funnyL {
+  0% {top: 20px; left:10px}
+  /*45% {top: 20px; left:10px}
+  50% {top: 50px; left: 500px}
+  100% {top: 50px; left: 500px}*/
+  50% {top: 20px; left:10px}
+  100% {top: 20px; left:250px}
+}
+
+@keyframes funnyR {
+  0% {top: -150px; left:500px}
+  /*
+  45% {top: -150px; left:500px}
+  50% {top: -170px; left: 10px}
+  100% {top: -170px; left: 10px}
+  */
+  50% {top: -150px; left:500px}
+  100% {top: -180px; left: 250}
+}
+
+.facebg {
+  background-color: paleturquoise;
+}
+.face {
+  display: inline-block;
+  position: relative;
+  width: 750px;
+  height: 700px;
+  top: 0px;
+  left: 100px;
+  /*background: red;*/
+  color: white;
+}
+
+#eyeL {
+  border-width: 200px;
+  background: white;
+  position: relative;
+  top: 20px;
+  left: 10px;
+  width: 200px;
+  height: 200px;
+  animation-name: funnyL;
+  animation-duration: 60s;
+}
+
+#eyeL:hover {
+  background-image: url('w4/images/Destiny.jpg');
+  background-size: 100% 100%;
+}
+
+#pupilL {
+  background: black;
+  position: relative;
+  width: 50px;
+  height: 50px;
+  top: 20px;
+  left: 50px;
+}
+
+#pupilL:hover {
+  left: 125px;
+}
+
+#eyeR {
+  border-width: 200px;
+  background: white;
+  position: relative;
+  top: -150px;
+  left: 500px;
+  width: 200px;
+  height: 200px;
+  animation-name: funnyR;
+  animation-duration: 60s;
+}
+
+#eyeR:hover {
+  background-image: url('w4/images/Subnautica.png');
+  background-size: 100% 100%;
+}
+
+#pupilR {
+  background: black;
+  position: relative;
+  width: 50px;
+  height: 50px;
+  top: 50px;
+  left: 50px;
+  word-wrap: break-word;
+}
+
+#pupilR:hover {
+  top: 120px;
+}
+
+#nose {
+  position: relative;
+  top: -150px;
+  left: 300px;
+  width: 100px;
+  height: 150px;
+  background: tomato;
+}
+
+#mouth {
+  position: relative;
+  top: -100px;
+  left: 175px;
+  width: 400px;
+  height: 150px;
+  background: black;
+}
+
+#mouth:hover {
+  top: 0;
+}
+
+#title {
+  text-align: center;
+  font-size: 50px;
+}
