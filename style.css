@@ -2,7 +2,7 @@ body {
   background-color: skyblue;
 }
 p {
-  background-color: aquamarine;
+  
 }
 
 main {
@@ -133,4 +133,5 @@ main {
 #title {
   text-align: center;
   font-size: 50px;
+  background-color: aquamarine;
 }
