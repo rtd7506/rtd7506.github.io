@@ -56,7 +56,7 @@ main {
   width: 200px;
   height: 200px;
   animation-name: funnyL;
-  animation-duration: 60s;
+  animation-duration: 30s;
 }
 
 #eyeL:hover {
@@ -86,7 +86,7 @@ main {
   width: 200px;
   height: 200px;
   animation-name: funnyR;
-  animation-duration: 60s;
+  animation-duration: 30s;
 }
 
 #eyeR:hover {
