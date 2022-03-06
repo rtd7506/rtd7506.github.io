@@ -47,8 +47,24 @@
 }
 
 .center{
-  position: relative;
-  left: 210px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.largetext{
+  text-align: left;
+  font-family: 'Gentium Book Basic', serif;
+  font-size: 45px;
+  display: flex;
+  align-items: center;
+}
+
+.smalltext{
+  display: table-cell;
+  text-align: left;
+  font-family: 'Gentium Book Basic', serif;
+  font-size: 35px;
 }
 
 .wrapper{
@@ -65,10 +81,7 @@
   grid-row: 1/span 3;
 }
 .item2{
-  text-align: left;
   
-  font-family: 'Gentium Book Basic', serif;
-  font-size: 45px;
 }
 .item3{
   grid-column: 2;
