@@ -1,0 +1,94 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Poster Project</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  
+</head>
+
+<body onload="writeText">
+  <!--<script>
+    
+    let name = "TEST@#";
+    document.getElementById(s_text).innerHTML = name;
+  </script>
+  -->
+  <div class="title">Don't Let the Pigeon Drive the Bus!</div>
+  <div class="title2">by Mo Willems</div>
+  <div class="bbus">
+    <div class="wheel2"></div>
+    <div class="wheel4"></div>
+    <div class="bus"></div>
+    <div class="light1"></div>
+    <div class="light2"></div>
+    <div class="grill1"></div>
+    <div class="grill2"></div>
+    <div class="grill3"></div>
+    <div class="top"></div>
+    <div class="bumper"></div>
+    <div class="window"></div>
+    <div class="window1"></div>
+    <div class="window2"></div>
+    <div class="window3"></div>
+    <div class="wheel1"></div>
+    <div class="wheel3"></div>
+  </div>
+
+  <div class="move" onmouseenter="iterateVar()">
+    <div class="pigeon">
+      <div class="speech">
+        <div class="speech2"></div>
+        <span id="s_text"></span>
+        <script type="text/javascript">
+          let test5 = "SAY SOMETHING";
+          let i = -1;
+          let words = ["Hey, can I drive the bus?", "Please?", "I'll be careful", "No?", "I never get to do anything!", "Hey, I've got an idea.", "Let's play 'Drive the Bus'!", "I'll go first!", "C'mon! Just once around the block!", "I'll be your best friend!", "How 'bout I give you five bucks?", "What's the big deal!?", "It's just a bus!!!", "No fair!", "I bet your mom would let me.", "I have dreams, you know!", "Fine.", "LET ME DRIVE THE BUS!!", "C'MON"];
+          function writeText() 
+          {
+            console.log(words[i]);
+            console.log(i);
+            document.getElementById("s_text").innerHTML = words[i];
+          }
+          function iterateVar()
+          {
+            i += 1;
+            if (i>17)
+            {
+              i = 0;
+            }
+            writeText();
+          }
+          writeText();
+        </script>
+      </div>
+      <div class="beakB"></div>
+      <div class="beakT"></div>
+      <div class="neck"></div>
+      <div class="neck2"></div>
+      <div class="head"></div>
+      <div class="body"></div>
+      <div class="neck_cover"></div>
+      <div class="wing"></div>
+      <div class="wing_cover"></div>
+      <div class="eye"></div>
+      <div class="pupil"></div>
+      <div class="eyelid"></div>
+      <div class="legL1">
+        <div class="legL2">
+          <div class="toeL1"></div>
+          <div class="toeL2"></div>
+        </div>
+      </div>
+      <div class="legR1">
+        <div class="legR2">
+          <div class="toeR1"></div>
+          <div class="toeR2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

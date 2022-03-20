@@ -1,0 +1,691 @@
+body {
+  background-color:wheat;
+}
+
+.title {
+  position: absolute;
+  left: 15%;
+  top: 25px;
+  height: 200px;
+  width: 1250px;
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 50px;
+  vertical-align: middle;
+}
+.title2 {
+  position: absolute;
+  left: 15%;
+  top: 100px;
+  height: 200px;
+  width: 1250px;
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 30px;
+  vertical-align: middle;
+}
+
+.head {
+  position: absolute;
+  top: 95px;
+  left: 482px;
+  height: 125px;
+  width: 125px;
+  background-color:powderblue;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+  border-radius: 50%;
+}
+
+.neck {
+  position: absolute;
+  top: 200px;
+  left: 515px;
+  height: 175px;
+  width: 50px;
+  background-color:powderblue;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+}
+
+.neck2 {
+  position: absolute;
+  top: 260px;
+  left: 515px;
+  height: 25px;
+  width: 50px;
+  background-color:white;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+}
+
+.neck_cover {
+  position: absolute;
+  top: 375px;
+  left: 522px;
+  height: 10px;
+  width: 51px;
+  background-color:powderblue;
+  
+}
+
+.body { /* From: https://www.geeksforgeeks.org/how-to-draw-a-semi-circle-using-html-and-css/ */
+  position: absolute;
+  top: 375px;
+  left: 315px;
+  height: 125px;
+  width: 250px;
+  border-radius: 0 0 100px 150px;
+  background-color: powderblue;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+}
+
+.wing {
+  position: absolute;
+  top: 390px;
+  left: 390px;
+  height: 60px;
+  width: 140px;
+  border-radius: 0 0 100px 150px;
+  background-color: powderblue;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+}
+
+.wing_cover {
+  position: absolute;
+  top: 390px;
+  left: 445px;
+  height: 10px;
+  width: 100px;
+  background-color: powderblue;
+}
+
+.beakT {
+  width: 45px;
+	height: 20px;
+  position: absolute;
+  left: 605px;
+  top: 145px;
+  background-color: palegoldenrod;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+	border-radius: 100px 150px 0px 0px;
+}
+
+.beakB {
+  width: 25px;
+	height: 20px;
+  position: absolute;
+  left: 605px;
+  top: 167px;
+  background-color: palegoldenrod;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+	border-radius: 0 0 150px 100px;
+  transform-origin: -100% 0%;
+}
+
+.eye {
+  position: absolute;
+  top: 125px;
+  left: 515px;
+  height: 60px;
+  width: 60px;
+  background-color:white;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+  border-radius: 50%;
+}
+
+.pupil {
+  position: absolute;
+  top: 135px;
+  left: 540px;
+  height: 30px;
+  width: 30px;
+  background-color:black;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+  border-radius: 50%;
+}
+
+.eyelid {
+  position: absolute;
+  top: 125px;
+  left: 515px;
+  height: 20px;
+  width: 60px;
+  border-radius: 62.5px 62.5px 0px 0px;
+  background-color:cornflowerblue;
+  background-color:lightslategrey;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+  display: none;
+}
+
+.legL1 {
+  position: absolute;
+  top: 510px;
+  left: 420px;
+  height: 65px;
+  width: 1px;
+  background-color:black;
+  border-style: solid;
+  border-width: 3px;
+  border-color:black;
+  transform-origin: 0% 0%;
+  animation-name: legL1_anim;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  /*transform: rotate(90deg)*/
+}
+
+.legL2 {
+  position: relative;
+  top: 65px;
+  height: 65px;
+  left: -3px;
+  width: 1px;
+  background-color:black;
+  border-style: solid;
+  border-width: 3px;
+  border-color:black;
+  transform-origin: 0% 0%;
+  animation-name: legL2_anim;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  
+  /*transform: rotate(90deg)*/
+}
+
+.legR1 {
+  position: absolute;
+  top: 510px;
+  left: 485px;
+  height: 65px;
+  width: 1px;
+  background-color:black;
+  border-style: solid;
+  border-width: 3px;
+  border-color:black;
+  transform-origin: 0% 0%;
+  animation-name: legR1_anim;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.legR2 {
+  position: relative;
+  top: 65px;
+  height: 65px;
+  left: -3px;
+  width: 1px;
+  background-color:black;
+  border-style: solid;
+  border-width: 3px;
+  border-color:black;
+  transform-origin: 0% 0%;
+  animation-name: legR2_anim;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.toeL1 {
+  /*
+  position: absolute;
+  top: 604px;
+  left: 409px;
+  */
+  position: relative;
+  top: 39px;
+  left: -12;
+  transform: skew(-45deg);
+  height: 15px;
+  width: 1px;
+  background-color:black;
+  border-style: solid;
+  border-width: 3px;
+  border-color:black;
+}
+
+.toeL2 {
+  /*
+  position: absolute;
+  top: 604px;
+  left: 430px;
+  */
+  position: relative;
+  top: 17px;
+  left: 7px;
+  transform: skew(45deg);
+  height: 15px;
+  width: 1px;
+  background-color:black;
+  border-style: solid;
+  border-width: 3px;
+  border-color:black;
+}
+
+.toeR1 {
+  position: relative;
+  top: 39px;
+  left: -12;
+  transform: skew(-45deg);
+  height: 15px;
+  width: 1px;
+  background-color:black;
+  border-style: solid;
+  border-width: 3px;
+  border-color:black;
+}
+
+.toeR2 {
+  position: relative;
+  top: 17px;
+  left: 7px;
+  transform: skew(45deg);
+  height: 15px;
+  width: 1px;
+  background-color:black;
+  border-style: solid;
+  border-width: 3px;
+  border-color:black;
+}
+
+.pigeon {
+  position: absolute;
+  animation-name: p_body;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  /*left: calc(100px + counter(move-X));*/
+}
+
+.move {
+  position: absolute;
+  top: 10%;
+  /*bottom: 90%;*/
+  animation-name: move_anim;
+  animation-duration: 20s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  /*animation-play-state: paused;*/
+}
+
+.move:hover {
+  animation-play-state: paused;
+}
+.move:hover .legL1{ /*From: https://www.codegrepper.com/code-examples/css/css+animate+another+element+on+hover*/
+  animation-play-state: paused;
+}
+.move:hover .legL2{ /*There's probably a faster way to do this*/
+  animation-play-state: paused;
+}
+.move:hover .legR1{
+  animation-play-state: paused;
+}
+.move:hover .legR2{
+  animation-play-state: paused;
+}
+.move:hover .pigeon{
+  animation-play-state: paused;
+}
+.move:hover .pupil{
+  left: 520px;
+}
+.move:hover .eyelid{
+  /*display: block;*/
+}
+
+.move:hover .beakB{
+  transform: rotate(25deg);
+}
+
+.move:hover .speech{
+  display: block;
+}
+
+.move:hover #s_text{
+  display: block;
+}
+
+.speech {
+  position: absolute;
+  top: 20px;
+  left: 700px;
+  width: 350px;
+  height: 200px;
+  background-color: white;
+  border-radius: 175px/100px;
+  display: none;
+}
+
+#s_text {
+  position: absolute;
+  top: 75px;
+  height: 200px;
+  width: 350px;
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 35px;
+  vertical-align: middle;
+}
+
+.speech2 {
+  position: relative;
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 100px solid white;
+  top: 200px; 
+  left: -50px;
+  transform-origin: 50% 0%;
+  transform: rotate(-135deg);
+}
+
+/*
+.pigeon:hover {
+  --main-x: 150px;
+  counter-increment: move-X;
+}
+
+:root {
+  --main-x: 100px;
+  content: counter(move-X);
+}
+*/
+@keyframes legL1_anim {
+  0% {transform: rotate(-45deg)}
+  12.5% {transform: rotate(-45deg)}
+  25% {transform: rotate(0deg)}
+  37.5% {transform: rotate(15deg)}
+  50% {transform: rotate(15deg)}
+  62.5% {transform: rotate(15deg)}
+  75% {transform: rotate(0deg)}
+  87.5% {transform: rotate(-45deg)}
+  100% {transform: rotate(-45deg)}
+}
+
+@keyframes legL2_anim {
+  0% {transform: rotate(0deg)}
+  12.5% {transform: rotate(45deg)}
+  25% {transform: rotate(0deg)}
+  37.5% {transform: rotate(0deg)}
+  50% {transform: rotate(15deg)}
+  62.5% {transform: rotate(45deg)}
+  75% {transform: rotate(90deg)}
+  87.5% {transform: rotate(45deg)}
+  100% {transform: rotate(0deg)}
+}
+
+@keyframes legR1_anim {
+  /*
+  0% {transform: rotate(-45deg)}
+  12.5% {transform: rotate(-45deg)}
+  25% {transform: rotate(0deg)}
+  37.5% {transform: rotate(15deg)}
+  50% {transform: rotate(15deg)}
+  62.5% {transform: rotate(15deg)}
+  75% {transform: rotate(0deg)}
+  87.5% {transform: rotate(-45deg)}
+  100% {transform: rotate(-45deg)}
+  */
+  0% {transform: rotate(15deg)}
+  12.5% {transform: rotate(15deg)}
+  25% {transform: rotate(0deg)}
+  37.5% {transform: rotate(-45deg)}
+  50% {transform: rotate(-45deg)}
+  62.5% {transform: rotate(-45deg)}
+  75% {transform: rotate(0deg)}
+  87.5% {transform: rotate(15deg)}
+  100% {transform: rotate(15deg)}
+}
+
+@keyframes legR2_anim {
+  /*
+  0% {transform: rotate(0deg)}
+  12.5% {transform: rotate(45deg)}
+  25% {transform: rotate(0deg)}
+  37.5% {transform: rotate(0deg)}
+  50% {transform: rotate(15deg)}
+  62.5% {transform: rotate(45deg)} 
+  75% {transform: rotate(90deg)}
+  87.5% {transform: rotate(45deg)}
+  100% {transform: rotate(0deg)}
+  */
+  0% {transform: rotate(15deg)}
+  12.5% {transform: rotate(45deg)}
+  25% {transform: rotate(90deg)}
+  37.5% {transform: rotate(45deg)}
+  50% {transform: rotate(0deg)}
+  
+  62.5% {transform: rotate(45deg)}
+  75% {transform: rotate(0deg)}
+  87.5% {transform: rotate(0deg)}
+  100% {transform: rotate(15deg)}
+}
+
+@keyframes p_body {
+  0% {top: 0px}
+  12.5% {top: 10px}
+  25% {top: -5px}
+  37.5% {top: -10px}
+  50% {top: 0px}
+  62.5% {top: 10px}
+  75% {top: -5px}
+  87.5% {top: -10px}
+  100% {top: 0px}
+}
+
+@keyframes move_anim {
+  0% {left: -10%}
+  100% {left: 40%}
+}
+
+.bbus {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+}
+
+.bus {
+  position: absolute;
+  top: 100px;
+  left: 1100px;
+  width: 850px;
+  height: 450px;
+  background-color:powderblue;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+}
+
+.window {
+  position: absolute;
+  top: 175px;
+  left: 1100px;
+  width: 225px;
+  height: 200px;
+  background-color:blanchedalmond;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+}
+.window1 {
+  position: absolute;
+  top: 175px;
+  left: 1400px;
+  width: 150px;
+  height: 175px;
+  background-color:blanchedalmond;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+}
+.window2 {
+  position: absolute;
+  top: 175px;
+  left: 1575px;
+  width: 150px;
+  height: 175px;
+  background-color:blanchedalmond;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+}
+.window3 {
+  position: absolute;
+  top: 175px;
+  left: 1750px;
+  width: 150px;
+  height: 175px;
+  background-color:blanchedalmond;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+}
+.wheel1 {
+  position: absolute;
+  top: 450px;
+  left: 1425px;
+  width: 75px;
+  height: 175px;
+  background-color:black;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+  border-radius: 50%;
+}
+.wheel2 {
+  position: absolute;
+  top: 450px;
+  left: 1225px;
+  width: 75px;
+  height: 175px;
+  background-color:black;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+  border-radius: 50%;
+}
+.wheel3 {
+  position: absolute;
+  top: 450px;
+  left: 1825px;
+  width: 75px;
+  height: 175px;
+  background-color:black;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+  border-radius: 50%;
+}
+.wheel4 {
+  position: absolute;
+  top: 450px;
+  left: 1650px;
+  width: 75px;
+  height: 175px;
+  background-color:black;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+  border-radius: 50%;
+}
+.light1 {
+  position: absolute;
+  top: 405px;
+  left: 1125px;
+  width: 50px;
+  height: 40px;
+  background-color:blanchedalmond;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+  border-radius: 50%;
+}
+.light2 {
+  position: absolute;
+  top: 405px;
+  left: 1250px;
+  width: 50px;
+  height: 40px;
+  background-color:blanchedalmond;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+  border-radius: 50%;
+}
+.grill1 {
+  position: absolute;
+  top: 475px;
+  left: 1100px;
+  width: 220px;
+  height: 1px;
+  background-color: black;
+  border-style: solid;
+  border-width: 3px;
+  border-color:black;
+}
+.grill2 {
+  position: absolute;
+  top: 490px;
+  left: 1100px;
+  width: 220px;
+  height: 1px;
+  background-color: black;
+  border-style: solid;
+  border-width: 3px;
+  border-color:black;
+}
+.grill3 {
+  position: absolute;
+  top: 505px;
+  left: 1100px;
+  width: 220px;
+  height: 1px;
+  background-color: black;
+  border-style: solid;
+  border-width: 3px;
+  border-color:black;
+}
+.top {
+  position: absolute;
+  top: 75px;
+  left: 1130px;
+  width: 150px;
+  height: 50px;
+  background-color:lightcyan;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+}
+
+.bumper {
+  position: absolute;
+  top: 530px;
+  left: 1080px;
+  width: 225px;
+  height: 20px;
+  background-color:lightcyan;
+  border-style: solid;
+  border-width: 7px;
+  border-color:black;
+}
