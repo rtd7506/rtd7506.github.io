@@ -1,0 +1,164 @@
+button {
+  position: absolute;
+  left: 51%;
+  top: 51%;
+  width: 75px;
+  height: 75px;
+  border-radius: 50px;
+  background-color: red;
+  border-color: black;
+  border-width: 5px;
+}
+
+button:hover {
+  transform: scale(1.25);
+}
+
+body {
+  background-color: beige;
+}
+
+p {
+  text-align: center;
+  font-size: 50px;
+  position: relative;
+  top: 10%;
+  left: 50px;
+  /*
+  width: 500px;
+  height: 10em;
+  margin: 0;
+  display: flex;
+  justify-content: center;*/
+}
+
+/*
+scene2 {
+  display: ;
+}
+*/
+/*#box:hover {
+  transform: scale(1.15);
+}*/
+
+.box {
+  position: absolute;
+  z-index: 9;
+  width: 100px;
+  height: 100px;
+  left: 50%;
+  top: 50%;
+  background-color: peru;
+  border-color: black;
+  border-width: 7px;
+  border-style: solid;
+  border-radius: 7px;
+  text-align: center;
+  font-size: 15px;
+  visibility: hidden;
+}
+
+.boxGrip {
+  position: relative;
+  z-index: 10;
+  cursor:grab;
+  background-color:chocolate;
+  text-align: center;
+  height: 20px;
+  width: 100%;
+  top: -7px;
+  left: -7px;
+  border-color: black;
+  border-width: 7px;
+  border-style: solid;
+  border-radius: 7px;
+  font-size: 15px;
+}
+
+/* Scene 2 */
+
+.box:nth-child(2) {
+  left: 48%;
+  top: 47%;
+  height: 150px;
+  width: 150px;
+}
+.box:nth-child(3) {
+  left: 40%;
+  top: 49%;
+  height: 150px;
+  width: 150px;
+}
+.box:nth-child(4) {
+  left: 55%;
+  top: 36%;
+  height: 250px;
+  width: 100px;
+}
+.box:nth-child(5) {
+  left: 47%;
+  top: 54%;
+  height: 125px;
+  width: 150px;
+}
+
+
+/* Scene 3 */
+
+.box:nth-child(6) {
+  left: 46%;
+  top: 56%;
+  height: 125px;
+  width: 275px;
+}
+
+.box:nth-child(7) {
+  left: 35%;
+  top: 58%;
+  height: 125px;
+  width: 125px;
+}
+
+.box:nth-child(8) {
+  left: 59%;
+  top: 63%;
+  height: 80px;
+  width: 80px;
+}
+
+.box:nth-child(9) {
+  left: 80%;
+  top: 25%;
+  height: 70px;
+  width: 70px;
+}
+.box:nth-child(10) {
+  left: 13%;
+  top: 75%;
+}
+.box:nth-child(11) {
+  left: 53%;
+  top: 85%;
+}
+.box:nth-child(12) {
+  left: 75%;
+  top: 75%;
+}
+.box:nth-child(13) {
+  left: 15%;
+  top: 15%;
+  height: 60px;
+  width: 60px;
+}
+.box:nth-child(14) {
+  left: 7%;
+  top: 45%;
+  height: 90px;
+  width: 90px;
+}
+.box:nth-child(15) {
+  left: 90%;
+  top: 45%;
+  height: 90px;
+  width: 90px;
+}
