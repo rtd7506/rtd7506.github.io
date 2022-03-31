@@ -113,7 +113,7 @@ function trickCheck() {
 
 function endCheck()
 {
-  if (i==21 && ((boxes2[9].offsetTop<(innerHeight*0.75)-20 || boxes2[9].offsetTop>(innerHeight*0.75)+20)))
+  if ((i>15 && i<22) && ((boxes2[9].offsetTop<(innerHeight*0.75)-20 || boxes2[9].offsetTop>(innerHeight*0.75)+20)))
   {
     console.log("GSFGRHSDFHGSGSGV");
     console.log(boxes2[9].offsetTop);
