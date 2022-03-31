@@ -91,7 +91,7 @@ function progressionCheck() {
 }
 
 function moveProg() {
-  if (i<8 || (i>8 && i<14) || (i>15 && i<19) || (i>19))
+  if (i<8 || (i>8 && i<14) || (i>15 && i<19) || (i>19 && i<21))
   {
     i+=1;
   }
@@ -106,6 +106,18 @@ function trickCheck() {
     /*console.log(boxes2[0].innerHTML);
     console.log(boxes2[0].offsetLeft);*/
     i=20;
+    displayText();
+    progressionCheck();
+  }
+}
+
+function endCheck()
+{
+  if (i==21 && ((boxes2[9].offsetTop<(innerHeight*0.75)-20 || boxes2[9].offsetTop>(innerHeight*0.75)+20)))
+  {
+    console.log("GSFGRHSDFHGSGSGV");
+    console.log(boxes2[9].offsetTop);
+    i=22;
     displayText();
     progressionCheck();
   }
@@ -213,5 +225,6 @@ function dragElement(elmnt) {
     document.onmouseup = null;
     document.onmousemove = null;
     trickCheck();
+    endCheck();
   }
 }
