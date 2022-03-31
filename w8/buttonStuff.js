@@ -3,7 +3,7 @@ console.log("test");
 let theBody = document.querySelector("body");
 const myButton = document.getElementById("theButton");
 const myText = document.getElementById("theText");
-let textArray = ["Don't press that button","No seriously stop", "Stop it!","You're really pushin' my buttons","get it?", "because buttons", "...", "oh look a box", "Hey don't move that!", "Oh look some more boxes", "Hey you should seriously stop", "I don't think you should move these", "They look pretty heavy", "I mean what're the chances there would be a button under here?", "JUST STOP", "Oh so you think you're so clever", "How about THIS!", "This enough boxes for you?!","Because you seem to LOVE moving them around!","Just TRY finding that button!","HA! GOTCHA", "IT WAS ACTUALLY OVER HERE!", "WAIT NO!", "I bet you think you're clever", "Well, I'm all out of boxes", "NOW THERE'S NO BUTTON! IS THIS WHAT YOU WANT?! YOU DID THIS TO ME!!!"];
+let textArray = ["Don't press that button","No seriously stop", "Stop it!","You're really pushin' my buttons","get it?", "because buttons", "...", "oh look a box", "Hey don't move that!", "Oh look some more boxes", "Hey you should seriously stop", "I don't think you should move these", "They look pretty heavy", "I mean what're the chances there would be a button under here?", "JUST STOP", "Oh so you think you're so clever", "How about THIS!", "This enough boxes for you?!","Because you seem to LOVE moving them around!","Just TRY finding that button!","HA! GOTCHA", "THERE WAS NEVER ANY BUTTON", "WAIT NO!", "I bet you think you're clever", "Well, I'm all out of boxes", "NOW THERE'S NO BUTTON! IS THIS WHAT YOU WANT?! YOU DID THIS TO ME!!!"];
 let textTransformsY = ["10%","10%","15%","10%","15%","20%","20%","40%","30%","20%","20%","20%","20%","20%","20%","10%","10%","10%","10%","10%","20%","70%"]
 let i = 0;
 let boxes;
@@ -50,7 +50,7 @@ function displayText() {
   }
   if (i>20 && i<23)
   {
-    boxes2[9].style.backgroundColor = "red";
+    /*boxes2[9].style.backgroundColor = "red";*/
   }
 }
 
