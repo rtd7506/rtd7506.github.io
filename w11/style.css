@@ -1,0 +1,47 @@
+body {
+  /*background-color: #1C2636;*/
+}
+
+#fMouse{
+  width: 0.75%; 
+  height: 2.25%;
+  position: absolute;
+  transform: scaleX(-1);
+  pointer-events: none;
+}
+
+.redBox{
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  left: 100px;
+  top: 100px;
+  background-color: red;
+}
+
+.yelBox{
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  right: 100px;
+  bottom: 100px;
+  background-color: yellow;
+}
+
+#redCir{
+  position: absolute;
+  background-color: rgba(255,0,0,0.75);
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  pointer-events: none;
+}
+
+#yelCir{
+  position: absolute;
+  background-color: rgba(255,255,0,0.75);
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  pointer-events: none;
+}
