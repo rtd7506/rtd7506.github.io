@@ -2,6 +2,7 @@ const theButton = $("#myButton").on("click", clickFunc);
 let x;
 let y;
 
+
 $( document ).on( "mousemove", function( e ) {
   x = e.pageX;
   y = e.pageY;
@@ -46,3 +47,4 @@ function overlapM(yBox) { //From: https://stackoverflow.com/questions/14012766/d
 function clickFunc(){
   console.log(event.pageX);
 }
+
