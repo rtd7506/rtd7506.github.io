@@ -141,8 +141,16 @@ $("body").click(function() {
     if (axisIndex==0 || axisIndex==2)
     {
       $("#seperator").css({width: 2, height: innerHeight, top: 0, left: "50%"})
+      $(".bluBox:nth-child(1)").css({left: "55%", top: "45%"});
+      $(".bluBox:nth-child(3)").css({top: "60%", left: "5%"});
+      $("#diffSel").css({top: "45%", left: "72%"});
+      $("#timeSel").css({top: "60%", left: "22%"});
     }else if (axisIndex==1){
       $("#seperator").css({width: innerWidth, height: 2, top: innerHeight/2, left: 0})
+      $(".bluBox:nth-child(1)").css({left: "5%", top: "75%"});
+      $(".bluBox:nth-child(3)").css({top: "30%", left: "55%"});
+      $("#diffSel").css({top: "75%", left: "21%"});
+      $("#timeSel").css({top: "30%", left: "72%"});
     }
   }
   //console.log(overlapM($(".yelBox")));

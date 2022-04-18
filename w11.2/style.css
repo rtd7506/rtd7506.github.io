@@ -152,7 +152,6 @@ body {
 #diffSel{
   position: absolute;
   transform-origin: center center;
-  width: 40px;
   width: 175px;
   height: 40px;
   left: 72%;
