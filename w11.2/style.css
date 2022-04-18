@@ -1,0 +1,225 @@
+body {
+  background-color: #1c1b1eff;
+}
+
+#fMouse{
+  width: 0.75%; 
+  height: 2.25%;
+  position: absolute;
+  transform: scaleX(-1);
+  pointer-events: none;
+}
+
+.redBox{
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  left: 100px;
+  top: 100px;
+  border-radius: 25px;
+  /*background-color: red;*/
+  background: radial-gradient(#ff8484,#f00);
+  box-shadow: 0px 0px 20px 10px #f00;/*From: https://codersblock.com/blog/creating-glow-effects-with-css/*/
+}
+
+.yelBox{
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  right: 100px;
+  bottom: 100px;
+  border-radius: 25px;
+  /*background-color: yellow;*/
+  background: radial-gradient(#ffffa2,#ff0);
+  box-shadow: 0px 0px 20px 10px #ff0; 
+}
+
+#redCir{
+  position: absolute;
+  background-color: rgba(255,0,0,0.85);
+  /*background: radial-gradient(#ff8484,#f00);*/
+  box-shadow: 0px 0px 10px 5px #f00; 
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  pointer-events: none;
+}
+
+#yelCir{
+  position: absolute;
+  background-color: rgba(255,255,0,.85);
+  box-shadow: 0px 0px 10px 5px #ff0; 
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  pointer-events: none;
+}
+
+#scoreKeeper{
+  position: absolute;
+  color: white;
+  left: 100px;
+  top: 50px;
+  font-size: 25px;
+  font-family: 'Russo One', sans-serif;
+  text-shadow: 0px 0px 20px #fff;
+}
+
+.Timer{
+  position: absolute;
+  color: white;
+  right: 100px;
+  top: 50px;
+  font-size: 25px;
+  font-family: 'Russo One', sans-serif;
+  text-shadow: 0px 0px 20px #fff;
+}
+
+#titleText{
+  position: absolute;
+  transform-origin: center center;
+  transform: translate(25.75%,0%);
+  color: white;
+  font-size: 7vw;
+  font-family: 'Russo One', sans-serif;
+  top: 30px;
+  width: 75%;
+  text-align: center;
+  text-shadow: 0px 0px 20px #fff;
+}
+
+#seperator{
+  position: absolute;
+  transform-origin: center;
+  width: 2px;
+  height: 100%;
+  top: -5px;
+  background-color: aqua;
+  left: 50%;
+}
+
+#start{
+  position: absolute;
+  transform-origin: center center;
+  width: 300px;
+  height: 60px;
+  left: 10%;
+  top: 25%;
+  border-radius: 25px;
+  /*background-color: red;*/
+  background: radial-gradient(#ff8484,#f00);
+  box-shadow: 0px 0px 20px 10px #f00;
+  text-align: center;
+  color: white;
+  font-size: 50px;
+  font-family: 'Russo One', sans-serif;
+  padding: 30px;
+}
+
+.bluBox{
+  position: absolute;
+  transform-origin: center center;
+  width: 125px;
+  height: 30px;
+  left: 55%;
+  top: 45%;
+  border-radius: 25px;
+  /*background-color: red;*/
+  background: radial-gradient(rgb(133, 237, 255),rgb(0, 217, 255));
+  box-shadow: 0px 0px 20px 10px rgb(0, 217, 255);
+  text-align: center;
+  color: white;
+  font-size: 25px;
+  font-family: 'Russo One', sans-serif;
+  padding: 25px;
+}
+
+.bluBox:nth-child(2){
+  top: 75%;
+  padding: 30px;
+  height: 20px;
+  font-size: 22px;
+}
+
+.bluBox:nth-child(3){
+  top: 60%;
+  left: 5%;
+  padding: 30px;
+  height: 20px;
+  font-size: 18px;
+}
+
+#diffSel{
+  position: absolute;
+  transform-origin: center center;
+  width: 40px;
+  width: 175px;
+  height: 40px;
+  left: 72%;
+  top: 45%;
+  border-radius: 25px;
+  /*background-color: red;*/
+  background: radial-gradient(#ffffa2,#ff0);
+  box-shadow: 0px 0px 20px 10px #ff0; 
+  text-align: center;
+  color: white;
+  text-shadow: 2px 2px #000;
+  font-size: 40px;
+  font-family: 'Russo One', sans-serif;
+  padding: 20px;
+}
+
+#axisSel{
+  position: absolute;
+  transform-origin: center center;
+  width: 175px;
+  height: 40px;
+  left: 72%;
+  top: 75%;
+  border-radius: 25px;
+  /*background-color: red;*/
+  background: radial-gradient(#ffffa2,#ff0);
+  box-shadow: 0px 0px 20px 10px #ff0; 
+  text-align: center;
+  color: white;
+  text-shadow: 2px 2px #000;
+  font-size: 40px;
+  font-family: 'Russo One', sans-serif;
+  padding: 20px;
+}
+
+#timeSel{
+  position: absolute;
+  transform-origin: center center;
+  width: 175px;
+  height: 40px;
+  left: 22%;
+  top: 60%;
+  border-radius: 25px;
+  /*background-color: red;*/
+  background: radial-gradient(#ff8484,#f00);
+  box-shadow: 0px 0px 20px 10px #f00;
+  text-align: center;
+  color: white;
+  font-size: 40px;
+  font-family: 'Russo One', sans-serif;
+  padding: 20px;
+}
+
+#start:hover {
+  transform: scale(1.05);
+}
+
+#timeSel:hover {
+  transform: scale(1.05);
+}
+
+#highscore{
+  position: absolute;
+  color: white;
+  left: 100px;
+  top: 50px;
+  font-size: 25px;
+  font-family: 'Russo One', sans-serif;
+  text-shadow: 0px 0px 20px #fff;
+}
