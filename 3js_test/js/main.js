@@ -24,22 +24,22 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 
 renderer.shadowMap.enabled = true;
 
-camera.position.set(4,12,4);
+camera.position.set(15,15,15);
 
 renderer.render(scene,camera);
 
-const geometry = new THREE.CylinderGeometry( 3, 3, 20, 16);
+const geometry = new THREE.BoxGeometry( 1, 1, 2);
 const material = new THREE.MeshPhongMaterial( { color: 0xFF6347});
-const cylinder = new THREE.Mesh(geometry, material);
+const cube = new THREE.Mesh(geometry, material);
 
-//scene.add(cylinder);
+//scene.add(cube);
 
 //IMPORTING MODELS TEST
 const loader = new GLTFLoader();
 
 loader.frustumCulled = false;
 
-loader.load( 'models/lighthouse_site_full.glb', function ( gltf ) {
+loader.load( 'models/lighthouse_site1.3.glb', function ( gltf ) {
   gltf.scene.traverse( function ( child ) {
     if ( child.isMesh ) {
       child.castShadow = true;
@@ -108,7 +108,26 @@ dirLight.shadow.bias = -0.005;
 
 scene.add( dirLight );
 
+const squidLight = new THREE.PointLight(0x9C942D);
+squidLight.position.set(0,-9,5);
 
+squidLight.castShadow = true;
+
+squidLight.shadow.mapSize.width = 2048;
+squidLight.shadow.mapSize.height = 2048;
+
+squidLight.shadow.camera.left = -100;
+squidLight.shadow.camera.right = 100;
+squidLight.shadow.camera.top = 100;
+squidLight.shadow.camera.bottom = -100;
+
+squidLight.shadow.camera.near = 0.1;
+squidLight.shadow.camera.far = 500;
+squidLight.shadow.bias = -0.005;
+
+const squidHelper = new THREE.PointLightHelper(squidLight);
+
+scene.add(squidLight)//, squidHelper)
 
 scene.background = new THREE.Color(0x87ceeb); //https://discourse.threejs.org/t/is-it-possible-to-change-the-background-color-of-the-scene-from-the-gui-controls/27307/2
 //0x87ceeb
@@ -136,15 +155,144 @@ window.addEventListener('resize', function( )
 
 })
 
+//SCROLL SYSTEM
+let scroll = 0;
+let amp = 10;
+
+window.addEventListener("wheel", event => { //https://stackoverflow.com/questions/14926366/mousewheel-event-in-modern-browsers
+  const delta = Math.sign(event.deltaY);
+  //console.log(delta);
+  scroll+=delta;
+  if (scroll<0)
+  {
+    scroll=0;
+  }
+  console.log(scroll);
+  /*
+  if (delta == 1){
+    if (scroll>75){
+      amp += 0.25;
+    }
+  }
+  if (delta == -1){
+    if (scroll>75){
+      amp -= 0.25;
+    }
+  }
+  */
+
+});
+
 //Controls
-const controls = new OrbitControls(camera, renderer.domElement);
+//const controls = new OrbitControls(camera, renderer.domElement);
 
 function animate() {
   requestAnimationFrame(animate);
-  cylinder.rotation.x += 0.01;
-  cylinder.rotation.y += 0.005;
-  cylinder.rotation.z += 0.01;
-  controls.update();
+  cube.position.x = 7*(Math.cos(scroll/1));
+  cube.position.y = 7-scroll;
+  cube.position.z = 7*(Math.sin(scroll/1));
+  //camera.rotation.x = Math.PI;
+  //cube.rotation.y = Math.PI/4;
+  //cube.lookAt( 0,cube.position.y-5,0)
+  //console.log(cube.getWorldDirection());
+  /*
+  camX = [10,2,4.8829,-4.9499,-10,-12.0172]
+  camY = [7,8,7,3.5,2,0]
+  camZ = [10,2,-1.0755,-0.7056,-5,-8.9771]
+  camRX = [0,1,0,0,-6,0]
+  camRY = [3,7,6,2.5,-1,-1]
+  camRZ = [0,0,0,0,0,-2,0]
+  */
+
+
+  if (scroll < 0){
+    camera.position.x = 10;
+    camera.position.y = 7;
+    camera.position.z = 10;
+    camera.lookAt(0,3,0);
+  }else if (scroll < 30){ //Formula:  (INITAL POSITION)+((POSITION_OFFSET)*(scroll-(INITIAL_SCROLL))/(TOTAL_SCROLL))
+    camera.position.x = 10+(-8*(scroll-0)/30); //END VALUE 2
+    camera.position.y = 7+(1*(scroll-0)/30);; //END VALUE 8
+    camera.position.z = 10+(-8*(scroll-0)/30); //END VALUE 2
+    camera.lookAt(1*(scroll-0)/30,3+(4*(scroll-0)/30),0); //END VALUE 1, 7, 0
+  }else if (scroll < 40){
+    camera.position.x = 2+(+2.8829*(scroll-30)/10); //START: 2 END: 4.8829 DIFF: -2.8829
+    camera.position.y = 8+(-1*(scroll-30)/10); //START: 8 END: 7
+    camera.position.z = 2+(-3.0755*(scroll-30)/10); //START: 2 END: -1.0755
+    camera.lookAt(1+(-1*(scroll-30)/10),7+(-1*(scroll-30)/10),0); //X{START: 1 END:0} Y{START: 7 END:6}
+  }else if (scroll < 75){
+    camera.position.x = 5*(Math.cos((scroll-105)/10));
+    camera.position.y = 0.5-(scroll-105)/10;
+    camera.position.z = 5*(Math.sin((scroll-105)/10));
+    camera.lookAt( 0,camera.position.y-1,0)
+  }else if (scroll < 90){
+    /* START VALUES
+    camera.position.x = -4.9499
+    camera.position.y = 3.5
+    camera.position.z = -0.7056
+    camera.lookAt(0,2.5,0);
+    */
+    /* END VALUES
+    camera.position.x = -10
+    camera.position.y = 2
+    camera.position.z = -5
+    camera.lookAt(-6,-1,-2);
+    */
+    camera.position.x = -4.9499+(-5.0501*(scroll-75)/15);
+    camera.position.y = 3.5+(-1.5*(scroll-75)/15);
+    camera.position.z = -0.7056+(-5.7056*(scroll-75)/15);
+    camera.lookAt(0+(-6*(scroll-75)/15),2.5+(-3.5*(scroll-75)/15),0+(-2*(scroll-75)/15));
+  }else if(scroll < 100){
+    /* START VALUES
+    camera.position.x = -10
+    camera.position.y = 2
+    camera.position.z = -5
+    camera.lookAt(-6,-1,-2);
+    */
+    /* END VALUES
+    camera.position.x = -12.0172
+    camera.position.y = 0
+    camera.position.z = -8.9771
+    camera.lookAt(0,-1,0);
+    */
+    camera.position.x = -10+(-2.0172*(scroll-90)/10);
+    camera.position.y = 2+(-2*(scroll-90)/10);
+    camera.position.z = -5+(-3.9771*(scroll-90)/10);
+    camera.lookAt(-6+(6*(scroll-90)/10),-1,-2+(2*(scroll-90)/10));
+  }else{
+    camera.position.x = 15*(Math.cos((scroll-125)/10));
+    camera.position.y = -2.5-(scroll-125)/10;
+    camera.position.z = 15*(Math.sin((scroll-125)/10));
+    camera.lookAt( 0,camera.position.y-1,0)
+  }
+  
+  cube.position.x = -6;
+  cube.position.y = -1;
+  cube.position.z = -2;
+  /*
+  camera.position.x = 15*(Math.cos((scroll-25)/10));
+  camera.position.y = -2.5-(scroll-25)/10;
+  camera.position.z = 15*(Math.sin((scroll-25)/10));
+  camera.lookAt( 0,camera.position.y-1,0)
+  */
+  
+
+  //camera.rotation.y = Math.PI/4;
+  //cube.rotation.z += 0.01;
+  //controls.update();
+
+  //TINT
+  if (camera.position.y<-2){ //#1B3669 //0x366CCF
+    ambientLight.color = new THREE.Color(0x1B3669)
+    pointLight.color = new THREE.Color(0x1B3669)
+    hemiLight.color.setHSL( 0.6, 1, 0.6 );
+    hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
+    scene.background = new THREE.Color(0x1B3669);
+  }else{
+    ambientLight.color = new THREE.Color(0xFFFFFF)
+    scene.background = new THREE.Color(0x87ceeb);
+  }
+
   renderer.render( scene, camera);
 }
 
