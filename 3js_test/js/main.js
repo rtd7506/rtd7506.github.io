@@ -6,6 +6,11 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.117.1/build/three.module.js';
 import {OrbitControls} from "https://cdn.jsdelivr.net/npm/three@0.117.1/examples/jsm/controls/OrbitControls.js"; 
 import {GLTFLoader} from "https://cdn.jsdelivr.net/npm/three@0.117.1/examples/jsm/loaders/GLTFLoader.js";
+import {EffectComposer} from 'https://unpkg.com/three@0.117.1/examples/jsm/postprocessing/EffectComposer.js';
+import {RenderPass} from 'https://unpkg.com/three@0.117.1/examples/jsm/postprocessing/RenderPass.js';
+import {UnrealBloomPass} from 'https://unpkg.com/three@0.117.1/examples/jsm/postprocessing/UnrealBloomPass.js';
+import {BokehPass} from 'https://unpkg.com/three@0.117.1/examples/jsm/postprocessing/BokehPass.js';
+//import { GUI } from 'https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js';
 
 
 const scene = new THREE.Scene();
@@ -21,6 +26,7 @@ const renderer = new THREE.WebGLRenderer(
 //document.body.appendChild(renderer.domElement)
 //renderer.pixelRatio(window.devicePixelRatio);
 renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.setPixelRatio( window.devicePixelRatio );
 
 renderer.shadowMap.enabled = true;
 
@@ -28,27 +34,64 @@ camera.position.set(15,15,15);
 
 renderer.render(scene,camera);
 
-const geometry = new THREE.BoxGeometry( 1, 1, 2);
-const material = new THREE.MeshPhongMaterial( { color: 0xFF6347});
+const geometry = new THREE.BoxGeometry( .5, 1, .5);
+const material = new THREE.MeshStandardMaterial( { color: 0xFF6347});
+material.emissive = new THREE.Color(0xFF6347);
+material.emissiveIntensity = 100;
+
 const cube = new THREE.Mesh(geometry, material);
 
+cube.castShadow = true;
+
 //scene.add(cube);
+
+cube.position.x = 0;
+cube.position.y = 7;
+cube.position.z = 0;
 
 //IMPORTING MODELS TEST
 const loader = new GLTFLoader();
 
 loader.frustumCulled = false;
 
-loader.load( 'models/lighthouse_site1.3.glb', function ( gltf ) {
+
+let mixer;
+let model;
+let boatAction, waterAction, squidAction;
+
+loader.load( 'models/lighthouse_site1.5.glb', function ( gltf ) {
   gltf.scene.traverse( function ( child ) {
-    if ( child.isMesh ) {
+    if ( child.isMesh && child.name != "lighthouse_glass") {
       child.castShadow = true;
       child.receiveShadow = true;
+      console.log(child.name)
+      //child.material.emissive = new THREE.Color(0xF0F);
     }
+    
+    if (child.name  == "ship1"){
+      child.castShadow = true;
+    }
+    
   } );
   scene.add( gltf.scene );
+  
+  model = gltf.scene;
+  mixer = new THREE.AnimationMixer(model)
+  const clips = gltf.animations;
+  const boatClip = THREE.AnimationClip.findByName(clips, "boat_move");
+  boatAction = mixer.clipAction(boatClip);
+  boatAction.setLoop(THREE.LoopOnce)
 
-	
+  const waterClip = THREE.AnimationClip.findByName(clips, "water_line");
+  waterAction = mixer.clipAction(waterClip);
+  waterAction.play();
+
+  const squidClip = THREE.AnimationClip.findByName(clips, "squid_action1");
+  squidAction = mixer.clipAction(squidClip);
+  squidAction.setLoop(THREE.LoopOnce)
+  //squidAction.play();
+  
+  //action.play();
 
 }, undefined, function ( error ) {
 
@@ -58,10 +101,14 @@ loader.load( 'models/lighthouse_site1.3.glb', function ( gltf ) {
 
 
 
+//const action = mixer.clipAction()
+
+
 //==============================
 
-const pointLight = new THREE.PointLight(0x9C942D);
+const pointLight = new THREE.PointLight(0x9C942D); //0x9C942D
 pointLight.position.set(0,7.25,0);
+pointLight.power = 3;
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.25);
 
@@ -77,19 +124,21 @@ scene.add(targetObject);
 spotLight.target = targetObject;
 spotLight.castShadow = true;
 scene.add(spotLight);
-scene.add(pointLight, ambientLight);
+
+
+//ocean color
 
 //Sky Lighting from: https://stackoverflow.com/questions/15478093/realistic-lighting-sunlight-with-three-js
 const hemiLight = new THREE.HemisphereLight( 0x0000ff, 0x00ff00, 0.75 );  //sky_color ground_color intensity 
 hemiLight.color.setHSL( 0.6, 1, 0.6 );
 hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
 hemiLight.position.set( 0, 50, 0 );
-scene.add( hemiLight );
+
 
 
 const dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
 dirLight.color.setHSL( 0.1, 1, 0.95 );
-dirLight.position.set( - 1, 1.75, 1 );
+dirLight.position.set( 0.25, 0.75, -1 ); //1
 dirLight.position.multiplyScalar( 30 );
 
 dirLight.castShadow = true;
@@ -97,19 +146,21 @@ dirLight.castShadow = true;
 dirLight.shadow.mapSize.width = 2048;
 dirLight.shadow.mapSize.height = 2048;
 
-dirLight.shadow.camera.left = -100;
-dirLight.shadow.camera.right = 100;
-dirLight.shadow.camera.top = 100;
-dirLight.shadow.camera.bottom = -100;
+dirLight.shadow.camera.left = -50;
+dirLight.shadow.camera.right = 50;
+dirLight.shadow.camera.top = 50;
+dirLight.shadow.camera.bottom = -50;
 
 dirLight.shadow.camera.near = 0.1;
-dirLight.shadow.camera.far = 500;
+dirLight.shadow.camera.far = 50;
 dirLight.shadow.bias = -0.005;
 
-scene.add( dirLight );
+
 
 const squidLight = new THREE.PointLight(0x9C942D);
 squidLight.position.set(0,-9,5);
+squidLight.strength = 20;
+squidLight.distance = 10;
 
 squidLight.castShadow = true;
 
@@ -122,19 +173,24 @@ squidLight.shadow.camera.top = 100;
 squidLight.shadow.camera.bottom = -100;
 
 squidLight.shadow.camera.near = 0.1;
-squidLight.shadow.camera.far = 500;
+squidLight.shadow.camera.far = 50;
 squidLight.shadow.bias = -0.005;
 
 const squidHelper = new THREE.PointLightHelper(squidLight);
 
-scene.add(squidLight)//, squidHelper)
 
-scene.background = new THREE.Color(0x87ceeb); //https://discourse.threejs.org/t/is-it-possible-to-change-the-background-color-of-the-scene-from-the-gui-controls/27307/2
+
+scene.background = new THREE.Color(0xBF4B8B); //0x87ceeb //https://discourse.threejs.org/t/is-it-possible-to-change-the-background-color-of-the-scene-from-the-gui-controls/27307/2
 //0x87ceeb
 //0x0077ff
 //0xC2B3B3
 //006994
-//scene.fog = new THREE.Fog(0x87ceeb,15,100);
+
+scene.add( hemiLight );
+scene.add( dirLight );
+scene.add(pointLight, ambientLight);
+scene.add(squidLight)//, squidHelper)
+
 
 //
 
@@ -167,7 +223,10 @@ window.addEventListener("wheel", event => { //https://stackoverflow.com/question
   {
     scroll=0;
   }
-  console.log(scroll);
+  if (scroll > 197){
+    scroll=197;
+  }
+  //console.log(scroll);
   /*
   if (delta == 1){
     if (scroll>75){
@@ -180,17 +239,123 @@ window.addEventListener("wheel", event => { //https://stackoverflow.com/question
     }
   }
   */
+  bokehPass.focus = scroll;
 
 });
+
+//FANCY RENDERING
+const composer = new EffectComposer(renderer);
+composer.setSize(window.innerWidth,window.innerHeight);
+
+const renderPass = new RenderPass(scene, camera);
+
+composer.addPass(renderPass);
+
+const bloomPass = new UnrealBloomPass( //https://r105.threejsfundamentals.org/threejs/lessons/threejs-post-processing.html
+new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85
+);
+bloomPass.threshold = 0;
+bloomPass.strength = 0.2;
+bloomPass.radius = 0;
+
+composer.addPass(bloomPass);
+
+const bokehPass = new BokehPass(scene,camera,{
+  focus: 0.0005,
+	aperture: 3,//.025, //3
+	maxblur: 0.01,
+
+	width: window.innerWidth,
+	height: window.innerHeight
+});
+bokehPass.renderToScreen = true;
+renderer.logarithmicDepthBuffer = false;
+
+//composer.addPass(bokehPass)
+
+
+/*
+const bloomComposer = new EffectComposer(renderer);
+bloomComposer.setSize(window.innerWidth,window.innerHeight);
+
+bloomComposer.addPass(renderPass);
+//bloomComposer.addPass(bloomPass);
+*/
+//bloomPass.renderToScreen = true;
+//renderPass.renderToScreen = true;
+
+
+composer.renderToScreen = true;
+
+
+
+
+//bloomPass.renderToScreen = true;
+
+//
 
 //Controls
 //const controls = new OrbitControls(camera, renderer.domElement);
 
+//CLICK EVENTS
+let raycaster = new THREE.Raycaster();
+let mouse = new THREE.Vector2()
+
+function onMouseMove(event){ //https://www.youtube.com/watch?v=6oFvqLfRnsU&t=564s
+  event.preventDefault();
+
+  mouse.x = (event.clientX / window.innerWidth)*2-1;
+  mouse.y = -(event.clientY / window.innerHeight)*2+1;
+
+  raycaster.setFromCamera(mouse, camera);
+
+  let intersects = raycaster.intersectObjects(scene.children, true);
+  //console.log(intersects)
+  //console.log(intersects[0].object.name)
+  if (intersects[0].object.name == "ship1") //SHIP ANIM
+  {
+    console.log("Bye bye Boat!")
+    if (boatAction.isRunning() == false){
+      boatAction.play().reset();
+    }
+  }
+  if (intersects[0].object.name == "lighthouse_glass") //SHIP ANIM
+  {
+    if (pointLight.power == 3){
+      console.log("Lights off!")
+      pointLight.power = 0;
+    }else if (pointLight.power == 0){
+      console.log("Lights on!")
+      pointLight.power = 3;
+    }
+  }
+  if (scroll > 120) //Squid ANIM
+  {
+    console.log("Squid poke!")
+    if (squidAction.isRunning() == false){
+      squidAction.play().reset();
+    }
+  }
+
+  /*
+  for (let i = 0; i < intersects.length; i++){
+    console.log(intersects[0].object.name)
+  }
+  */
+}
+
+window.addEventListener('click', onMouseMove)
+
+const clock = new THREE.Clock();
+
 function animate() {
   requestAnimationFrame(animate);
-  cube.position.x = 7*(Math.cos(scroll/1));
-  cube.position.y = 7-scroll;
-  cube.position.z = 7*(Math.sin(scroll/1));
+  if (typeof mixer !== 'undefined'){
+    mixer.update(clock.getDelta());
+  }
+  //cube.position.x = 7*(Math.cos(scroll/1));
+  //cube.position.y = 7-scroll;
+  //cube.position.z = 7*(Math.sin(scroll/1));
   //camera.rotation.x = Math.PI;
   //cube.rotation.y = Math.PI/4;
   //cube.lookAt( 0,cube.position.y-5,0)
@@ -266,9 +431,7 @@ function animate() {
     camera.lookAt( 0,camera.position.y-1,0)
   }
   
-  cube.position.x = -6;
-  cube.position.y = -1;
-  cube.position.z = -2;
+  
   /*
   camera.position.x = 15*(Math.cos((scroll-25)/10));
   camera.position.y = -2.5-(scroll-25)/10;
@@ -287,13 +450,27 @@ function animate() {
     pointLight.color = new THREE.Color(0x1B3669)
     hemiLight.color.setHSL( 0.6, 1, 0.6 );
     hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
-    scene.background = new THREE.Color(0x1B3669);
+    scene.background = new THREE.Color(0x0D131A); //0D131A
+    scene.fog = new THREE.FogExp2(0x0D131A,0.05); //0x1B3669 //1C262B
+    bloomPass.strength = 0.75;
+    hemiLight.intensity = 0.01;
+    dirLight.intensity = 0;
+    ambientLight.intensity = 0.25;
+    
   }else{
-    ambientLight.color = new THREE.Color(0xFFFFFF)
-    scene.background = new THREE.Color(0x87ceeb);
+    ambientLight.color = new THREE.Color(0xF0A066) //0xFFFFFF
+    scene.background = new THREE.Color(0xF0A066); //0xBF4B8B //0x87ceeb
+    scene.fog = new THREE.FogExp2(0xF0A066,0.01); //0x87ceeb //0xE7C095
+    bloomPass.strength = 0.2;
+    dirLight.color = new THREE.Color(0xF0A066); //0xFFFFFF
+    hemiLight.color = new THREE.Color(0xF0A066);
+    dirLight.intensity = 1;
+    hemiLight.intensity = 0.75;
+    ambientLight.intensity = 0.25;
+    pointLight.color = new THREE.Color(0x9C942D);
   }
-
-  renderer.render( scene, camera);
+  //renderer.render( scene, camera);
+  composer.render();
 }
 
 animate()
