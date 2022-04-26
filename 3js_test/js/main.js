@@ -157,7 +157,7 @@ dirLight.shadow.camera.bottom = -50;
 
 dirLight.shadow.camera.near = 0.1;
 dirLight.shadow.camera.far = 50;
-dirLight.shadow.bias = -0.005;
+dirLight.shadow.bias = -0.001;
 
 
 
