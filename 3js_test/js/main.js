@@ -10,6 +10,8 @@ import {EffectComposer} from 'https://unpkg.com/three@0.117.1/examples/jsm/postp
 import {RenderPass} from 'https://unpkg.com/three@0.117.1/examples/jsm/postprocessing/RenderPass.js';
 import {UnrealBloomPass} from 'https://unpkg.com/three@0.117.1/examples/jsm/postprocessing/UnrealBloomPass.js';
 import {BokehPass} from 'https://unpkg.com/three@0.117.1/examples/jsm/postprocessing/BokehPass.js';
+import {ShaderPass} from 'https://unpkg.com/three@0.117.1/examples/jsm/postprocessing/ShaderPass.js';
+import {BokehShader} from 'https://unpkg.com/three@0.117.1/examples/jsm/shaders/BokehShader2.js';
 //import { GUI } from 'https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js';
 
 
@@ -57,11 +59,11 @@ loader.frustumCulled = false;
 
 let mixer;
 let model;
-let boatAction, waterAction, squidAction;
+let boatAction, waterAction, squidAction, sandAction;
 
-loader.load( 'models/lighthouse_site1.5.glb', function ( gltf ) {
+loader.load( 'models/lighthouse_site1.6.glb', function ( gltf ) {
   gltf.scene.traverse( function ( child ) {
-    if ( child.isMesh && child.name != "lighthouse_glass") {
+    if ( child.isMesh && child.name != "lighthouse_glass" && child.material.name != "select_box") {
       child.castShadow = true;
       child.receiveShadow = true;
       console.log(child.name)
@@ -90,7 +92,9 @@ loader.load( 'models/lighthouse_site1.5.glb', function ( gltf ) {
   squidAction = mixer.clipAction(squidClip);
   squidAction.setLoop(THREE.LoopOnce)
   //squidAction.play();
-  
+  const sandClip = THREE.AnimationClip.findByName(clips, "sandcastle_action1");
+  sandAction = mixer.clipAction(sandClip);
+  sandAction.setLoop(THREE.LoopOnce)
   //action.play();
 
 }, undefined, function ( error ) {
@@ -108,7 +112,7 @@ loader.load( 'models/lighthouse_site1.5.glb', function ( gltf ) {
 
 const pointLight = new THREE.PointLight(0x9C942D); //0x9C942D
 pointLight.position.set(0,7.25,0);
-pointLight.power = 3;
+pointLight.power = 5;
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.25);
 
@@ -123,7 +127,7 @@ scene.add(targetObject);
 //
 spotLight.target = targetObject;
 spotLight.castShadow = true;
-scene.add(spotLight);
+
 
 
 //ocean color
@@ -143,8 +147,8 @@ dirLight.position.multiplyScalar( 30 );
 
 dirLight.castShadow = true;
 
-dirLight.shadow.mapSize.width = 2048;
-dirLight.shadow.mapSize.height = 2048;
+dirLight.shadow.mapSize.width = 4096;//2048;
+dirLight.shadow.mapSize.height = 4096;
 
 dirLight.shadow.camera.left = -50;
 dirLight.shadow.camera.right = 50;
@@ -190,6 +194,9 @@ scene.add( hemiLight );
 scene.add( dirLight );
 scene.add(pointLight, ambientLight);
 scene.add(squidLight)//, squidHelper)
+/*
+scene.add(spotLight);
+*/
 
 
 //
@@ -226,6 +233,14 @@ window.addEventListener("wheel", event => { //https://stackoverflow.com/question
   if (scroll > 197){
     scroll=197;
   }
+  if (camera.position.y<-2)
+  {
+    $(".taskList").css({color: "lightgoldenrodyellow"});
+    $("#taskTitle").css({color: "lightgoldenrodyellow"});
+  }else{
+    $(".taskList").css({color: "white"});
+    $("#taskTitle").css({color: "white"});
+  }
   //console.log(scroll);
   /*
   if (delta == 1){
@@ -260,8 +275,9 @@ bloomPass.radius = 0;
 
 composer.addPass(bloomPass);
 
+/*
 const bokehPass = new BokehPass(scene,camera,{
-  focus: 0.0005,
+  focus: 14,
 	aperture: 3,//.025, //3
 	maxblur: 0.01,
 
@@ -269,6 +285,11 @@ const bokehPass = new BokehPass(scene,camera,{
 	height: window.innerHeight
 });
 bokehPass.renderToScreen = true;
+*/
+
+const bokehPass = new ShaderPass(BokehShader);
+//composer.addPass(bokehPass);
+
 renderer.logarithmicDepthBuffer = false;
 
 //composer.addPass(bokehPass)
@@ -301,41 +322,52 @@ composer.renderToScreen = true;
 let raycaster = new THREE.Raycaster();
 let mouse = new THREE.Vector2()
 
+
+
 function onMouseMove(event){ //https://www.youtube.com/watch?v=6oFvqLfRnsU&t=564s
   event.preventDefault();
-
   mouse.x = (event.clientX / window.innerWidth)*2-1;
   mouse.y = -(event.clientY / window.innerHeight)*2+1;
-
   raycaster.setFromCamera(mouse, camera);
-
   let intersects = raycaster.intersectObjects(scene.children, true);
   //console.log(intersects)
-  //console.log(intersects[0].object.name)
+  console.log(intersects[0].object.name)
   if (intersects[0].object.name == "ship1") //SHIP ANIM
   {
+    $(".taskList:nth-child(3)").css("text-decoration", "line-through"); //Checklist item 3
     console.log("Bye bye Boat!")
     if (boatAction.isRunning() == false){
       boatAction.play().reset();
     }
   }
-  if (intersects[0].object.name == "lighthouse_glass") //SHIP ANIM
+  if (intersects[0].object.name == "lighthouse_glass") //LIGHT ANIM
   {
-    if (pointLight.power == 3){
+    $(".taskList:nth-child(1)").css("text-decoration", "line-through"); //Checklist item 1
+    if (pointLight.power == 5){
       console.log("Lights off!")
       pointLight.power = 0;
     }else if (pointLight.power == 0){
       console.log("Lights on!")
-      pointLight.power = 3;
+      pointLight.power = 5;
     }
   }
-  if (scroll > 120) //Squid ANIM
+  if (intersects[0].object.name == "sand_selection") //SANDCASTLE ANIM
   {
+    $(".taskList:nth-child(2)").css("text-decoration", "line-through"); //Checklist item 2
+    console.log("RIP sandcastle!")
+    if (sandAction.isRunning() == false){
+      sandAction.play().reset();
+    }
+  }
+  if (intersects[0].object.name == "squid_selection") //Squid ANIM
+  {
+    $(".taskList:nth-child(4)").css("text-decoration", "line-through"); //Checklist item 4
     console.log("Squid poke!")
     if (squidAction.isRunning() == false){
       squidAction.play().reset();
     }
   }
+  
 
   /*
   for (let i = 0; i < intersects.length; i++){
@@ -344,7 +376,23 @@ function onMouseMove(event){ //https://www.youtube.com/watch?v=6oFvqLfRnsU&t=564
   */
 }
 
+function hover(event){
+  event.preventDefault();
+  mouse.x = (event.clientX / window.innerWidth)*2-1;
+  mouse.y = -(event.clientY / window.innerHeight)*2+1;
+  raycaster.setFromCamera(mouse, camera);
+  let intersects = raycaster.intersectObjects(scene.children, true);
+  document.body.style.cursor = "default";
+  if (intersects.length > 0){
+    if (intersects[0].object.name == "ship1" || intersects[0].object.name == "lighthouse_glass" || intersects[0].object.name == "sand_selection" || intersects[0].object.name == "squid_selection"){
+    document.body.style.cursor = "pointer";
+    }
+  }
+
+}
+
 window.addEventListener('click', onMouseMove)
+window.addEventListener("mousemove", hover)
 
 const clock = new THREE.Clock();
 

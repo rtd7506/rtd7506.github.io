@@ -2,4 +2,27 @@ canvas {
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 1;
+}
+
+#taskTitle{
+  position: absolute;
+  z-index: 0;
+  color: white;
+  font-family: 'Berkshire Swash', cursive;
+  font-size: 3vw;
+  top: 10px;
+  left: 75%;
+  height: 100px;
+  text-decoration: underline;
+}
+
+.taskList{
+  position: relative;
+  z-index: 0;
+  color: white;
+  font-family: 'Berkshire Swash', cursive;
+  font-size: 1.5vw;
+  left: 75%;
+  top: 10vh;
 }
