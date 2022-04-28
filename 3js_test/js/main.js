@@ -12,6 +12,7 @@ import {UnrealBloomPass} from 'https://unpkg.com/three@0.117.1/examples/jsm/post
 import {BokehPass} from 'https://unpkg.com/three@0.117.1/examples/jsm/postprocessing/BokehPass.js';
 import {ShaderPass} from 'https://unpkg.com/three@0.117.1/examples/jsm/postprocessing/ShaderPass.js';
 import {BokehShader} from 'https://unpkg.com/three@0.117.1/examples/jsm/shaders/BokehShader2.js';
+import { FXAAShader } from 'https://unpkg.com/three@0.117.1/examples/jsm/shaders/FXAAShader.js';
 //import { GUI } from 'https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js';
 
 
@@ -351,7 +352,11 @@ bloomComposer.addPass(renderPass);
 */
 //bloomPass.renderToScreen = true;
 //renderPass.renderToScreen = true;
-
+let fxaaPass = new ShaderPass( FXAAShader ); //From: https://threejs.org/examples/?q=post#webgl_postprocessing_fxaa
+const pixelRatio = renderer.getPixelRatio();
+fxaaPass.material.uniforms[ 'resolution' ].value.x = 1 / ( innerWidth * pixelRatio ); //canvas.offsetWidth * 
+fxaaPass.material.uniforms[ 'resolution' ].value.y = 1 / ( innerHeight * pixelRatio );
+composer.addPass(fxaaPass)
 
 composer.renderToScreen = true;
 
