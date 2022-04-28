@@ -59,9 +59,10 @@ loader.frustumCulled = false;
 
 let mixer;
 let model;
-let boatAction, waterAction, squidAction, sandAction;
+let boatAction, waterAction, squidAction, sandAction, dockAction, boatIdle, squidIdle, birdAction, birdAction2, birdIdle;
+let water;
 
-loader.load( 'models/lighthouse_site1.6.glb', function ( gltf ) {
+loader.load( 'models/lighthouse_site1.7.glb', function ( gltf ) {
   gltf.scene.traverse( function ( child ) {
     if ( child.isMesh && child.name != "lighthouse_glass" && child.material.name != "select_box") {
       child.castShadow = true;
@@ -72,6 +73,19 @@ loader.load( 'models/lighthouse_site1.6.glb', function ( gltf ) {
     
     if (child.name  == "ship1"){
       child.castShadow = true;
+    }
+
+    if (child.name == "water"){
+      child.scale.multiplyScalar( 25 );
+      child.castShadow = false;
+      //console.log(child)
+      child.material.opacity = 1;
+      water = child;
+    }
+
+    if (child.name == "water_line"){
+      child.castShadow = false;
+      child.receiveShadow = true;
     }
     
   } );
@@ -96,6 +110,34 @@ loader.load( 'models/lighthouse_site1.6.glb', function ( gltf ) {
   sandAction = mixer.clipAction(sandClip);
   sandAction.setLoop(THREE.LoopOnce)
   //action.play();
+  const dockClip = THREE.AnimationClip.findByName(clips, "dock_action");
+  dockAction = mixer.clipAction(dockClip);
+  dockAction.setLoop(THREE.LoopOnce)
+  //console.log(clips);
+  
+  const birdClip = THREE.AnimationClip.findByName(clips, "bird_action");
+  birdAction = mixer.clipAction(birdClip);
+  birdAction.setLoop(THREE.LoopOnce)
+
+  //birdAction.play();
+  
+  const birdClip2 = THREE.AnimationClip.findByName(clips, "bird_action_squid");
+  birdAction2 = mixer.clipAction(birdClip2);
+  birdAction2.setLoop(THREE.LoopOnce)
+  
+
+  //dockAction.play();
+  const bIdleClip = THREE.AnimationClip.findByName(clips, "boat_idle");
+  boatIdle = mixer.clipAction(bIdleClip);
+  boatIdle.play();
+
+  const sIdleClip = THREE.AnimationClip.findByName(clips, "squid_idle");
+  squidIdle = mixer.clipAction(sIdleClip);
+  squidIdle.play();
+
+  const biIdleClip = THREE.AnimationClip.findByName(clips, "bird_idle");
+  birdIdle = mixer.clipAction(biIdleClip);
+  birdIdle.play();
 
 }, undefined, function ( error ) {
 
@@ -213,6 +255,7 @@ window.addEventListener('resize', function( )
   let rw = window.innerWidth;
   let rh = window.innerHeight
   renderer.setSize(rw,rh);
+  renderer.setPixelRatio( window.devicePixelRatio );
   camera.aspect = rw/rh;
   camera.updateProjectionMatrix();
 
@@ -224,8 +267,9 @@ let amp = 10;
 
 window.addEventListener("wheel", event => { //https://stackoverflow.com/questions/14926366/mousewheel-event-in-modern-browsers
   const delta = Math.sign(event.deltaY);
-  //console.log(delta);
+  
   scroll+=delta;
+  //console.log(scroll);
   if (scroll<0)
   {
     scroll=0;
@@ -241,6 +285,9 @@ window.addEventListener("wheel", event => { //https://stackoverflow.com/question
     $(".taskList").css({color: "white"});
     $("#taskTitle").css({color: "white"});
   }
+  if (scroll==120){
+    scroll+=delta;
+  }
   //console.log(scroll);
   /*
   if (delta == 1){
@@ -254,7 +301,7 @@ window.addEventListener("wheel", event => { //https://stackoverflow.com/question
     }
   }
   */
-  bokehPass.focus = scroll;
+  //bokehPass.focus = scroll;
 
 });
 
@@ -287,7 +334,7 @@ const bokehPass = new BokehPass(scene,camera,{
 bokehPass.renderToScreen = true;
 */
 
-const bokehPass = new ShaderPass(BokehShader);
+//const bokehPass = new ShaderPass(BokehShader);
 //composer.addPass(bokehPass);
 
 renderer.logarithmicDepthBuffer = false;
@@ -331,43 +378,88 @@ function onMouseMove(event){ //https://www.youtube.com/watch?v=6oFvqLfRnsU&t=564
   raycaster.setFromCamera(mouse, camera);
   let intersects = raycaster.intersectObjects(scene.children, true);
   //console.log(intersects)
-  console.log(intersects[0].object.name)
-  if (intersects[0].object.name == "ship1") //SHIP ANIM
-  {
-    $(".taskList:nth-child(3)").css("text-decoration", "line-through"); //Checklist item 3
-    console.log("Bye bye Boat!")
-    if (boatAction.isRunning() == false){
-      boatAction.play().reset();
+  if (intersects.length > 0) {
+    console.log(intersects[0].object.name)
+    if (intersects[0].object.name == "ship1") //SHIP ANIM
+    {
+      $(".taskList:nth-child(3)").css("text-decoration", "line-through"); //Checklist item 3
+      console.log("Bye bye Boat!")
+      if (boatAction.isRunning() == false) {
+        //boatAction.weight = 1;
+        //boatIdle.weight = 0;
+        boatAction.play().reset();
+        boatIdle.crossFadeTo(boatAction, 1)
+        setTimeout(function() {
+          boatIdle.play().reset()
+          console.log(boatIdle.isRunning())
+          boatAction.crossFadeTo(boatIdle, 1)
+        }, boatAction._clip.duration*1000)
+      }
+    }
+    if (intersects[0].object.name == "lighthouse_glass") //LIGHT ANIM
+    {
+      $(".taskList:nth-child(1)").css("text-decoration", "line-through"); //Checklist item 1
+      if (pointLight.power == 5) {
+        console.log("Lights off!")
+        pointLight.power = 0;
+      } else if (pointLight.power == 0) {
+        console.log("Lights on!")
+        pointLight.power = 5;
+      }
+    }
+    if (intersects[0].object.name == "sand_selection") //SANDCASTLE ANIM
+    {
+      $(".taskList:nth-child(2)").css("text-decoration", "line-through"); //Checklist item 2
+      console.log("RIP sandcastle!")
+      if (sandAction.isRunning() == false) {
+        sandAction.play().reset();
+      }
+    }
+    if (intersects[0].object.name == "squid_selection") //Squid ANIM
+    {
+      $(".taskList:nth-child(4)").css("text-decoration", "line-through"); //Checklist item 4
+      console.log("Squid poke!")
+      if (squidAction.isRunning() == false && birdAction.isRunning() == false) {
+        //squidIdle.crossFadeTo(squidAction,1);
+        //squidAction.weight = 1;
+        //squidIdle.weight = 0;
+        squidAction.play().reset();
+        squidIdle.crossFadeTo(squidAction, 1)
+        setTimeout(function() {
+          squidIdle.play().reset()
+          squidAction.crossFadeTo(squidIdle, 1)
+        }, squidAction._clip.duration*1000)
+      }
+    }
+    if (intersects[0].object.name == "dock_selection") //Dock ANIM
+    {
+      //$(".taskList:nth-child(4)").css("text-decoration", "line-through"); //Checklist item 4
+      console.log("Dock collapse!")
+      if (dockAction.isRunning() == false) {
+        dockAction.play().reset();
+      }
+    }
+    if (intersects[0].object.name == "bird_selection") //SANDCASTLE ANIM
+    {
+      //$(".taskList:nth-child(2)").css("text-decoration", "line-through"); //Checklist item 2
+      console.log("Bye bye birdie!")
+      if (birdAction.isRunning() == false) {
+        birdAction.play().reset();
+        birdIdle.crossFadeTo(birdAction, 1)
+        setTimeout(function() {
+          birdIdle.play().reset()
+          birdAction.crossFadeTo(birdIdle, 1)
+        }, birdAction._clip.duration*1000)
+
+        birdAction2.play().reset();
+        squidIdle.crossFadeTo(birdAction2, 1)
+        setTimeout(function() {
+          squidIdle.play().reset()
+          birdAction2.crossFadeTo(squidIdle, 1)
+        }, birdAction2._clip.duration*1000)
+      }
     }
   }
-  if (intersects[0].object.name == "lighthouse_glass") //LIGHT ANIM
-  {
-    $(".taskList:nth-child(1)").css("text-decoration", "line-through"); //Checklist item 1
-    if (pointLight.power == 5){
-      console.log("Lights off!")
-      pointLight.power = 0;
-    }else if (pointLight.power == 0){
-      console.log("Lights on!")
-      pointLight.power = 5;
-    }
-  }
-  if (intersects[0].object.name == "sand_selection") //SANDCASTLE ANIM
-  {
-    $(".taskList:nth-child(2)").css("text-decoration", "line-through"); //Checklist item 2
-    console.log("RIP sandcastle!")
-    if (sandAction.isRunning() == false){
-      sandAction.play().reset();
-    }
-  }
-  if (intersects[0].object.name == "squid_selection") //Squid ANIM
-  {
-    $(".taskList:nth-child(4)").css("text-decoration", "line-through"); //Checklist item 4
-    console.log("Squid poke!")
-    if (squidAction.isRunning() == false){
-      squidAction.play().reset();
-    }
-  }
-  
 
   /*
   for (let i = 0; i < intersects.length; i++){
@@ -384,7 +476,7 @@ function hover(event){
   let intersects = raycaster.intersectObjects(scene.children, true);
   document.body.style.cursor = "default";
   if (intersects.length > 0){
-    if (intersects[0].object.name == "ship1" || intersects[0].object.name == "lighthouse_glass" || intersects[0].object.name == "sand_selection" || intersects[0].object.name == "squid_selection"){
+    if (intersects[0].object.name == "ship1" || intersects[0].object.name == "lighthouse_glass" || intersects[0].object.name == "sand_selection" || intersects[0].object.name == "squid_selection" || intersects[0].object.name == "dock_selection" || intersects[0].object.name == "bird_selection"){
     document.body.style.cursor = "pointer";
     }
   }
@@ -400,6 +492,16 @@ function animate() {
   requestAnimationFrame(animate);
   if (typeof mixer !== 'undefined'){
     mixer.update(clock.getDelta());
+    if (squidAction.isRunning() == false && birdAction2.isRunning() == false){
+      //squidAction.crossFadeTo(squidIdle, 1)
+      //squidAction.weight = 0;
+      //birdAction2.weight = 0;
+      //squidIdle.weight = 1;
+    }
+    if (boatAction.isRunning() == false){
+      //boatAction.weight = 0;
+      //boatIdle.weight = 1;
+    }
   }
   //cube.position.x = 7*(Math.cos(scroll/1));
   //cube.position.y = 7-scroll;
@@ -501,13 +603,17 @@ function animate() {
     scene.background = new THREE.Color(0x0D131A); //0D131A
     scene.fog = new THREE.FogExp2(0x0D131A,0.05); //0x1B3669 //1C262B
     bloomPass.strength = 0.75;
-    hemiLight.intensity = 0.01;
+    hemiLight.intensity = 0.01;//0.01
     dirLight.intensity = 0;
-    ambientLight.intensity = 0.25;
+    //dirLight.color = new THREE.Color(0x1B3669);
+    ambientLight.intensity = 0.5;
+    if (typeof mixer !== 'undefined'){ //Check to see if the model is loaded
+      water.material.opacity = 0.5;
+    }
     
   }else{
     ambientLight.color = new THREE.Color(0xF0A066) //0xFFFFFF
-    scene.background = new THREE.Color(0xF0A066); //0xBF4B8B //0x87ceeb
+    scene.background = new THREE.Color(0xF0A066); //0xBF4B8B //0x87ceeb //0xF0A066
     scene.fog = new THREE.FogExp2(0xF0A066,0.01); //0x87ceeb //0xE7C095
     bloomPass.strength = 0.2;
     dirLight.color = new THREE.Color(0xF0A066); //0xFFFFFF
@@ -516,8 +622,12 @@ function animate() {
     hemiLight.intensity = 0.75;
     ambientLight.intensity = 0.25;
     pointLight.color = new THREE.Color(0x9C942D);
+    if (typeof mixer !== 'undefined'){
+      water.material.opacity = 1;
+    }
   }
   //renderer.render( scene, camera);
+  
   composer.render();
 }
 
