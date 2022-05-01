@@ -13,6 +13,8 @@ import {BokehPass} from 'https://unpkg.com/three@0.117.1/examples/jsm/postproces
 import {ShaderPass} from 'https://unpkg.com/three@0.117.1/examples/jsm/postprocessing/ShaderPass.js';
 import {BokehShader} from 'https://unpkg.com/three@0.117.1/examples/jsm/shaders/BokehShader2.js';
 import { FXAAShader } from 'https://unpkg.com/three@0.117.1/examples/jsm/shaders/FXAAShader.js';
+//import { CompressedTextureLoader } from 'three';
+//import { RGBA_ASTC_10x10_Format } from 'three';
 //import { GUI } from 'https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js';
 
 
@@ -60,10 +62,10 @@ loader.frustumCulled = false;
 
 let mixer;
 let model;
-let boatAction, waterAction, squidAction, sandAction, dockAction, boatIdle, squidIdle, birdAction, birdAction2, birdIdle;
+let boatAction, waterAction, squidAction, sandAction, dockAction, boatIdle, squidIdle, birdAction, birdAction2, birdIdle, crabDoorAction, crabAction;
 let water;
 
-loader.load( 'models/lighthouse_site1.7.glb', function ( gltf ) {
+loader.load( 'models/lighthouse_site1.9.glb', function ( gltf ) {
   gltf.scene.traverse( function ( child ) {
     if ( child.isMesh && child.name != "lighthouse_glass" && child.material.name != "select_box") {
       child.castShadow = true;
@@ -75,7 +77,6 @@ loader.load( 'models/lighthouse_site1.7.glb', function ( gltf ) {
     if (child.name  == "ship1"){
       child.castShadow = true;
     }
-
     if (child.name == "water"){
       child.scale.multiplyScalar( 25 );
       child.castShadow = false;
@@ -83,12 +84,13 @@ loader.load( 'models/lighthouse_site1.7.glb', function ( gltf ) {
       child.material.opacity = 1;
       water = child;
     }
-
     if (child.name == "water_line"){
       child.castShadow = false;
       child.receiveShadow = true;
     }
-    
+    if (child.name == "door"){
+      child.frustumCulled = false;
+    }
   } );
   scene.add( gltf.scene );
   
@@ -139,6 +141,16 @@ loader.load( 'models/lighthouse_site1.7.glb', function ( gltf ) {
   const biIdleClip = THREE.AnimationClip.findByName(clips, "bird_idle");
   birdIdle = mixer.clipAction(biIdleClip);
   birdIdle.play();
+  
+  const crabDoorClip = THREE.AnimationClip.findByName(clips, "crab_action_door");
+  crabDoorAction = mixer.clipAction(crabDoorClip);
+  //crabDoorAction.play();
+  crabDoorAction.setLoop(THREE.LoopOnce)
+
+  const crabClip = THREE.AnimationClip.findByName(clips, "crab_action");
+  crabAction = mixer.clipAction(crabClip);
+  //crabAction.play();
+  crabAction.setLoop(THREE.LoopOnce)
 
 }, undefined, function ( error ) {
 
@@ -278,6 +290,7 @@ window.addEventListener("wheel", event => { //https://stackoverflow.com/question
   if (scroll > 197){
     scroll=197;
   }
+  /*
   if (camera.position.y<-2)
   {
     $(".taskList").css({color: "lightgoldenrodyellow"});
@@ -286,6 +299,7 @@ window.addEventListener("wheel", event => { //https://stackoverflow.com/question
     $(".taskList").css({color: "white"});
     $("#taskTitle").css({color: "white"});
   }
+  */
   if (scroll==120){
     scroll+=delta;
   }
@@ -414,7 +428,7 @@ function onMouseMove(event){ //https://www.youtube.com/watch?v=6oFvqLfRnsU&t=564
     }
     if (intersects[0].object.name == "sand_selection") //SANDCASTLE ANIM
     {
-      $(".taskList:nth-child(2)").css("text-decoration", "line-through"); //Checklist item 2
+      $(".taskList:nth-child(5)").css("text-decoration", "line-through"); //Checklist item 5
       console.log("RIP sandcastle!")
       if (sandAction.isRunning() == false) {
         sandAction.play().reset();
@@ -422,7 +436,8 @@ function onMouseMove(event){ //https://www.youtube.com/watch?v=6oFvqLfRnsU&t=564
     }
     if (intersects[0].object.name == "squid_selection") //Squid ANIM
     {
-      $(".taskList:nth-child(4)").css("text-decoration", "line-through"); //Checklist item 4
+      $(".taskList:nth-child(7)").css("text-decoration", "line-through"); //Checklist item 7
+      $(".taskList:nth-child(7)").text("- Disturb the sea monster");
       console.log("Squid poke!")
       if (squidAction.isRunning() == false && birdAction.isRunning() == false) {
         //squidIdle.crossFadeTo(squidAction,1);
@@ -438,7 +453,7 @@ function onMouseMove(event){ //https://www.youtube.com/watch?v=6oFvqLfRnsU&t=564
     }
     if (intersects[0].object.name == "dock_selection") //Dock ANIM
     {
-      //$(".taskList:nth-child(4)").css("text-decoration", "line-through"); //Checklist item 4
+      $(".taskList:nth-child(4)").css("text-decoration", "line-through"); //Checklist item 4
       console.log("Dock collapse!")
       if (dockAction.isRunning() == false) {
         dockAction.play().reset();
@@ -446,9 +461,10 @@ function onMouseMove(event){ //https://www.youtube.com/watch?v=6oFvqLfRnsU&t=564
     }
     if (intersects[0].object.name == "bird_selection") //SANDCASTLE ANIM
     {
-      //$(".taskList:nth-child(2)").css("text-decoration", "line-through"); //Checklist item 2
+      $(".taskList:nth-child(6)").css("text-decoration", "line-through"); //Checklist item 6
+      $(".taskList:nth-child(6)").text("- Bother the seagulls");
       console.log("Bye bye birdie!")
-      if (birdAction.isRunning() == false) {
+      if (birdAction.isRunning() == false && squidAction.isRunning() == false) {
         birdAction.play().reset();
         birdIdle.crossFadeTo(birdAction, 1)
         setTimeout(function() {
@@ -462,6 +478,15 @@ function onMouseMove(event){ //https://www.youtube.com/watch?v=6oFvqLfRnsU&t=564
           squidIdle.play().reset()
           birdAction2.crossFadeTo(squidIdle, 1)
         }, birdAction2._clip.duration*1000)
+      }
+    }
+    if (intersects[0].object.name == "door_selection") //CRAB ANIM
+    {
+      $(".taskList:nth-child(2)").css("text-decoration", "line-through"); //Checklist item 2
+      console.log("CRAB!")
+      if (crabAction.isRunning() == false) {
+        crabAction.play().reset();
+        crabDoorAction.play().reset();
       }
     }
   }
@@ -481,12 +506,32 @@ function hover(event){
   let intersects = raycaster.intersectObjects(scene.children, true);
   document.body.style.cursor = "default";
   if (intersects.length > 0){
-    if (intersects[0].object.name == "ship1" || intersects[0].object.name == "lighthouse_glass" || intersects[0].object.name == "sand_selection" || intersects[0].object.name == "squid_selection" || intersects[0].object.name == "dock_selection" || intersects[0].object.name == "bird_selection"){
+    if (intersects[0].object.name == "ship1" || intersects[0].object.name == "lighthouse_glass" || intersects[0].object.name == "sand_selection" || intersects[0].object.name == "squid_selection" || intersects[0].object.name == "dock_selection" || intersects[0].object.name == "bird_selection" || intersects[0].object.name == "door_selection"){
     document.body.style.cursor = "pointer";
     }
   }
 
 }
+
+let padState = 0; //0 = unclicked, 1 = clicked 2 = hidden
+
+//UI SECTION
+$("#notepad").click(function(){
+  padState = 2;
+  console.log("CLICK")
+})
+
+for (let i = 1; i < $(".taskList").length+1; i++){
+  console.log(i)
+  $(".taskList:nth-child("+i+")").css("top", 60+40*i); //Checklist item 5
+}
+
+$(".noteClose").click(function(){
+  padState = 4;
+  console.log("CLICK")
+})
+
+//
 
 window.addEventListener('click', onMouseMove)
 window.addEventListener("mousemove", hover)
@@ -634,6 +679,46 @@ function animate() {
   //renderer.render( scene, camera);
   
   composer.render();
+
+  //UI STATE MACHINE (USED A FLOWCHART TO PLAN THIS)
+  if (mouse.x > 0.35 && padState<2)
+  {
+    padState = 1;
+  }
+  if (mouse.x < 0.35 && padState<2){
+    padState = 0;
+  }
+  if(padState == 0){
+    if ($("#notepad").css("right") != "-249px"){
+      $("#notepad").css("right", "-="+ 7)
+    }
+  }else if (padState == 1){
+    if ($("#notepad").css("right") != "-25px"){
+      $("#notepad").css("right", "+="+ 7)
+    }
+  }else if (padState == 2){
+    $("#notepad").css("right", "-="+ 7)
+    if ($("#notepad").css("right") == "-249px"){
+      padState=3;
+    }
+  }else if (padState == 3){
+    if ($("#taskTitle").css("right") != "100px"){
+      $("#taskTitle").css("right", "+="+ 10)
+      $(".taskList").css("right", "+="+ 10)
+      $("#noteback").css("right", "+="+ 10)
+      $("#notebackR").css("right", "+="+ 10)
+      $(".noteClose").css("right", "+="+ 10)
+    }
+  }else if (padState == 4){
+    $("#taskTitle").css("right", "-="+ 10)
+    $(".taskList").css("right", "-="+ 10)
+    $("#noteback").css("right", "-="+ 10)
+    $("#notebackR").css("right", "-="+ 10)
+    $(".noteClose").css("right", "-="+ 10)
+    if ($("#taskTitle").css("right") == "-400px"){
+      padState=0;
+    }
+  }
 }
 
 animate()
