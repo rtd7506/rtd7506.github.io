@@ -1,3 +1,8 @@
+html{ /*From: https://stackoverflow.com/questions/13522787/how-do-i-stop-users-from-being-able-to-scroll-horizontally-on-my-site*/
+  overflow-x: hidden;
+  width: 100%;
+}
+
 canvas {
   position: fixed;
   top: 0;
@@ -28,6 +33,7 @@ canvas {
   right: -400px;
   height: 100px;
   text-decoration: underline;
+
 }
 
 .taskList{
@@ -40,6 +46,7 @@ canvas {
   right: -525px;
   top: 10vh;
   width: 450px; /*30vw*/
+
 }
 
 #noteback{
@@ -50,6 +57,7 @@ canvas {
   height: 430px;
   top: 10px;
   background-color:floralwhite;
+
 }
 
 #notebackR{
@@ -60,6 +68,7 @@ canvas {
   height: 460px;
   top: 0px;
   background-color:firebrick; 
+
 }
 
 .noteClose{
@@ -73,8 +82,19 @@ canvas {
   width: 50px;
   height: 20px;
   padding: 20px;
+
 }
 
 .noteClose:hover{
   color:dimgrey;
+}
+
+#loader{
+  position: absolute;
+  z-index: 9;
+  width: 150vw;
+  height: 100vh;
+  top: -5px;
+  left: -5px;
+  background-color: #FFDA8B;
 }

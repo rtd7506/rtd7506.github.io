@@ -1,8 +1,3 @@
-//Tutorial Followed: https://www.youtube.com/watch?v=Q7AOvWpIVHU&list=WL&index=1&t=208s
-
-//import "../style.css"
-
-//import * as THREE from "./three/build/three.js";//'three'
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.117.1/build/three.module.js';
 import {OrbitControls} from "https://cdn.jsdelivr.net/npm/three@0.117.1/examples/jsm/controls/OrbitControls.js"; 
 import {GLTFLoader} from "https://cdn.jsdelivr.net/npm/three@0.117.1/examples/jsm/loaders/GLTFLoader.js";
@@ -13,9 +8,6 @@ import {BokehPass} from 'https://unpkg.com/three@0.117.1/examples/jsm/postproces
 import {ShaderPass} from 'https://unpkg.com/three@0.117.1/examples/jsm/postprocessing/ShaderPass.js';
 import {BokehShader} from 'https://unpkg.com/three@0.117.1/examples/jsm/shaders/BokehShader2.js';
 import { FXAAShader } from 'https://unpkg.com/three@0.117.1/examples/jsm/shaders/FXAAShader.js';
-//import { CompressedTextureLoader } from 'three';
-//import { RGBA_ASTC_10x10_Format } from 'three';
-//import { GUI } from 'https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js';
 
 
 const scene = new THREE.Scene();
@@ -28,8 +20,7 @@ const renderer = new THREE.WebGLRenderer(
   antialias: true
   });
 
-//document.body.appendChild(renderer.domElement)
-//renderer.pixelRatio(window.devicePixelRatio);
+
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.setPixelRatio( window.devicePixelRatio );
 
@@ -48,7 +39,6 @@ const cube = new THREE.Mesh(geometry, material);
 
 cube.castShadow = true;
 
-//scene.add(cube);
 
 cube.position.x = 0;
 cube.position.y = 7;
@@ -71,7 +61,6 @@ loader.load( 'models/lighthouse_site1.9.glb', function ( gltf ) {
       child.castShadow = true;
       child.receiveShadow = true;
       console.log(child.name)
-      //child.material.emissive = new THREE.Color(0xF0F);
     }
     
     if (child.name  == "ship1"){
@@ -80,7 +69,6 @@ loader.load( 'models/lighthouse_site1.9.glb', function ( gltf ) {
     if (child.name == "water"){
       child.scale.multiplyScalar( 25 );
       child.castShadow = false;
-      //console.log(child)
       child.material.opacity = 1;
       water = child;
     }
@@ -108,28 +96,21 @@ loader.load( 'models/lighthouse_site1.9.glb', function ( gltf ) {
   const squidClip = THREE.AnimationClip.findByName(clips, "squid_action1");
   squidAction = mixer.clipAction(squidClip);
   squidAction.setLoop(THREE.LoopOnce)
-  //squidAction.play();
   const sandClip = THREE.AnimationClip.findByName(clips, "sandcastle_action1");
   sandAction = mixer.clipAction(sandClip);
   sandAction.setLoop(THREE.LoopOnce)
-  //action.play();
   const dockClip = THREE.AnimationClip.findByName(clips, "dock_action");
   dockAction = mixer.clipAction(dockClip);
   dockAction.setLoop(THREE.LoopOnce)
-  //console.log(clips);
   
   const birdClip = THREE.AnimationClip.findByName(clips, "bird_action");
   birdAction = mixer.clipAction(birdClip);
   birdAction.setLoop(THREE.LoopOnce)
-
-  //birdAction.play();
   
   const birdClip2 = THREE.AnimationClip.findByName(clips, "bird_action_squid");
   birdAction2 = mixer.clipAction(birdClip2);
   birdAction2.setLoop(THREE.LoopOnce)
   
-
-  //dockAction.play();
   const bIdleClip = THREE.AnimationClip.findByName(clips, "boat_idle");
   boatIdle = mixer.clipAction(bIdleClip);
   boatIdle.play();
@@ -144,7 +125,6 @@ loader.load( 'models/lighthouse_site1.9.glb', function ( gltf ) {
   
   const crabDoorClip = THREE.AnimationClip.findByName(clips, "crab_action_door");
   crabDoorAction = mixer.clipAction(crabDoorClip);
-  //crabDoorAction.play();
   crabDoorAction.setLoop(THREE.LoopOnce)
 
   const crabClip = THREE.AnimationClip.findByName(clips, "crab_action");
@@ -157,11 +137,6 @@ loader.load( 'models/lighthouse_site1.9.glb', function ( gltf ) {
 	console.error( error );
 
 } );
-
-
-
-//const action = mixer.clipAction()
-
 
 //==============================
 
@@ -188,6 +163,9 @@ spotLight.castShadow = true;
 //ocean color
 
 //Sky Lighting from: https://stackoverflow.com/questions/15478093/realistic-lighting-sunlight-with-three-js
+
+let timeofday = "day";
+
 const hemiLight = new THREE.HemisphereLight( 0x0000ff, 0x00ff00, 0.75 );  //sky_color ground_color intensity 
 hemiLight.color.setHSL( 0.6, 1, 0.6 );
 hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
@@ -249,12 +227,7 @@ scene.add( hemiLight );
 scene.add( dirLight );
 scene.add(pointLight, ambientLight);
 scene.add(squidLight)//, squidHelper)
-/*
-scene.add(spotLight);
-*/
 
-
-//
 
 //Debug Tools
 const lightHelper = new THREE.SpotLightHelper(spotLight);
@@ -290,34 +263,9 @@ window.addEventListener("wheel", event => { //https://stackoverflow.com/question
   if (scroll > 197){
     scroll=197;
   }
-  /*
-  if (camera.position.y<-2)
-  {
-    $(".taskList").css({color: "lightgoldenrodyellow"});
-    $("#taskTitle").css({color: "lightgoldenrodyellow"});
-  }else{
-    $(".taskList").css({color: "white"});
-    $("#taskTitle").css({color: "white"});
-  }
-  */
   if (scroll==120){
     scroll+=delta;
-  }
-  //console.log(scroll);
-  /*
-  if (delta == 1){
-    if (scroll>75){
-      amp += 0.25;
-    }
-  }
-  if (delta == -1){
-    if (scroll>75){
-      amp -= 0.25;
-    }
-  }
-  */
-  //bokehPass.focus = scroll;
-
+  } 
 });
 
 //FANCY RENDERING
@@ -337,35 +285,8 @@ bloomPass.radius = 0;
 
 composer.addPass(bloomPass);
 
-/*
-const bokehPass = new BokehPass(scene,camera,{
-  focus: 14,
-	aperture: 3,//.025, //3
-	maxblur: 0.01,
-
-	width: window.innerWidth,
-	height: window.innerHeight
-});
-bokehPass.renderToScreen = true;
-*/
-
-//const bokehPass = new ShaderPass(BokehShader);
-//composer.addPass(bokehPass);
-
 renderer.logarithmicDepthBuffer = false;
-
-//composer.addPass(bokehPass)
-
-
-/*
-const bloomComposer = new EffectComposer(renderer);
-bloomComposer.setSize(window.innerWidth,window.innerHeight);
-
-bloomComposer.addPass(renderPass);
-//bloomComposer.addPass(bloomPass);
-*/
-//bloomPass.renderToScreen = true;
-//renderPass.renderToScreen = true;
+ 
 let fxaaPass = new ShaderPass( FXAAShader ); //From: https://threejs.org/examples/?q=post#webgl_postprocessing_fxaa
 const pixelRatio = renderer.getPixelRatio();
 fxaaPass.material.uniforms[ 'resolution' ].value.x = 1 / ( innerWidth * pixelRatio ); //canvas.offsetWidth * 
@@ -373,16 +294,6 @@ fxaaPass.material.uniforms[ 'resolution' ].value.y = 1 / ( innerHeight * pixelRa
 composer.addPass(fxaaPass)
 
 composer.renderToScreen = true;
-
-
-
-
-//bloomPass.renderToScreen = true;
-
-//
-
-//Controls
-//const controls = new OrbitControls(camera, renderer.domElement);
 
 //CLICK EVENTS
 let raycaster = new THREE.Raycaster();
@@ -404,8 +315,6 @@ function onMouseMove(event){ //https://www.youtube.com/watch?v=6oFvqLfRnsU&t=564
       $(".taskList:nth-child(3)").css("text-decoration", "line-through"); //Checklist item 3
       console.log("Bye bye Boat!")
       if (boatAction.isRunning() == false) {
-        //boatAction.weight = 1;
-        //boatIdle.weight = 0;
         boatAction.play().reset();
         boatIdle.crossFadeTo(boatAction, 1)
         setTimeout(function() {
@@ -490,12 +399,6 @@ function onMouseMove(event){ //https://www.youtube.com/watch?v=6oFvqLfRnsU&t=564
       }
     }
   }
-
-  /*
-  for (let i = 0; i < intersects.length; i++){
-    console.log(intersects[0].object.name)
-  }
-  */
 }
 
 function hover(event){
@@ -542,32 +445,7 @@ function animate() {
   requestAnimationFrame(animate);
   if (typeof mixer !== 'undefined'){
     mixer.update(clock.getDelta());
-    if (squidAction.isRunning() == false && birdAction2.isRunning() == false){
-      //squidAction.crossFadeTo(squidIdle, 1)
-      //squidAction.weight = 0;
-      //birdAction2.weight = 0;
-      //squidIdle.weight = 1;
-    }
-    if (boatAction.isRunning() == false){
-      //boatAction.weight = 0;
-      //boatIdle.weight = 1;
-    }
   }
-  //cube.position.x = 7*(Math.cos(scroll/1));
-  //cube.position.y = 7-scroll;
-  //cube.position.z = 7*(Math.sin(scroll/1));
-  //camera.rotation.x = Math.PI;
-  //cube.rotation.y = Math.PI/4;
-  //cube.lookAt( 0,cube.position.y-5,0)
-  //console.log(cube.getWorldDirection());
-  /*
-  camX = [10,2,4.8829,-4.9499,-10,-12.0172]
-  camY = [7,8,7,3.5,2,0]
-  camZ = [10,2,-1.0755,-0.7056,-5,-8.9771]
-  camRX = [0,1,0,0,-6,0]
-  camRY = [3,7,6,2.5,-1,-1]
-  camRZ = [0,0,0,0,0,-2,0]
-  */
 
 
   if (scroll < 0){
@@ -591,35 +469,11 @@ function animate() {
     camera.position.z = 5*(Math.sin((scroll-105)/10));
     camera.lookAt( 0,camera.position.y-1,0)
   }else if (scroll < 90){
-    /* START VALUES
-    camera.position.x = -4.9499
-    camera.position.y = 3.5
-    camera.position.z = -0.7056
-    camera.lookAt(0,2.5,0);
-    */
-    /* END VALUES
-    camera.position.x = -10
-    camera.position.y = 2
-    camera.position.z = -5
-    camera.lookAt(-6,-1,-2);
-    */
     camera.position.x = -4.9499+(-5.0501*(scroll-75)/15);
     camera.position.y = 3.5+(-1.5*(scroll-75)/15);
     camera.position.z = -0.7056+(-5.7056*(scroll-75)/15);
     camera.lookAt(0+(-6*(scroll-75)/15),2.5+(-3.5*(scroll-75)/15),0+(-2*(scroll-75)/15));
   }else if(scroll < 100){
-    /* START VALUES
-    camera.position.x = -10
-    camera.position.y = 2
-    camera.position.z = -5
-    camera.lookAt(-6,-1,-2);
-    */
-    /* END VALUES
-    camera.position.x = -12.0172
-    camera.position.y = 0
-    camera.position.z = -8.9771
-    camera.lookAt(0,-1,0);
-    */
     camera.position.x = -10+(-2.0172*(scroll-90)/10);
     camera.position.y = 2+(-2*(scroll-90)/10);
     camera.position.z = -5+(-3.9771*(scroll-90)/10);
@@ -630,20 +484,6 @@ function animate() {
     camera.position.z = 15*(Math.sin((scroll-125)/10));
     camera.lookAt( 0,camera.position.y-1,0)
   }
-  
-  
-  /*
-  camera.position.x = 15*(Math.cos((scroll-25)/10));
-  camera.position.y = -2.5-(scroll-25)/10;
-  camera.position.z = 15*(Math.sin((scroll-25)/10));
-  camera.lookAt( 0,camera.position.y-1,0)
-  */
-  
-
-  //camera.rotation.y = Math.PI/4;
-  //cube.rotation.z += 0.01;
-  //controls.update();
-
   //TINT
   if (camera.position.y<-2){ //#1B3669 //0x366CCF
     ambientLight.color = new THREE.Color(0x1B3669)
@@ -655,28 +495,40 @@ function animate() {
     bloomPass.strength = 0.75;
     hemiLight.intensity = 0.01;//0.01
     dirLight.intensity = 0;
-    //dirLight.color = new THREE.Color(0x1B3669);
     ambientLight.intensity = 0.5;
     if (typeof mixer !== 'undefined'){ //Check to see if the model is loaded
       water.material.opacity = 0.5;
     }
     
   }else{
-    ambientLight.color = new THREE.Color(0xF0A066) //0xFFFFFF
-    scene.background = new THREE.Color(0xF0A066); //0xBF4B8B //0x87ceeb //0xF0A066
-    scene.fog = new THREE.FogExp2(0xF0A066,0.01); //0x87ceeb //0xE7C095
-    bloomPass.strength = 0.2;
-    dirLight.color = new THREE.Color(0xF0A066); //0xFFFFFF
-    hemiLight.color = new THREE.Color(0xF0A066);
-    dirLight.intensity = 1;
-    hemiLight.intensity = 0.75;
-    ambientLight.intensity = 0.25;
-    pointLight.color = new THREE.Color(0x9C942D);
+    if (timeofday == "day"){
+      ambientLight.color = new THREE.Color(0xF0A066) //0xFFFFFF
+      scene.background = new THREE.Color(0xF0A066); //0xBF4B8B //0x87ceeb //0xF0A066
+      scene.fog = new THREE.FogExp2(0xF0A066,0.01); //0x87ceeb //0xE7C095
+      bloomPass.strength = 0.2;
+      dirLight.color = new THREE.Color(0xF0A066); //0xFFFFFF
+      hemiLight.color = new THREE.Color(0xF0A066);
+      dirLight.intensity = 1;
+      hemiLight.intensity = 0.75;
+      ambientLight.intensity = 0.25;
+      pointLight.color = new THREE.Color(0x9C942D);
+    }else{
+      ambientLight.color = new THREE.Color(0x091C36) //0x091C36 //0x111D5C // 0x1F63BD
+      scene.background = new THREE.Color(0x091C36); //0xBF4B8B //0x87ceeb //0xF0A066
+      scene.fog = new THREE.FogExp2(0x091C36,0.01); //0x87ceeb //0xE7C095
+      bloomPass.strength = 0.2;
+      dirLight.color = new THREE.Color(0x111D5C); //0xFFFFFF
+      hemiLight.color = new THREE.Color(0x111D5C);
+      dirLight.intensity = 0.5;
+      hemiLight.intensity = .75;
+      ambientLight.intensity = 0;
+      pointLight.color = new THREE.Color(0x9C942D); //0x9C942D //0xFFD35C
+    }
+    
     if (typeof mixer !== 'undefined'){
       water.material.opacity = 1;
     }
   }
-  //renderer.render( scene, camera);
   
   composer.render();
 
@@ -719,7 +571,8 @@ function animate() {
       padState=0;
     }
   }
+  if (typeof mixer !== 'undefined' && $("#loader").css("opacity") > 0){
+    $("#loader").css("opacity", "-="+ 0.1);
+  }
 }
-
 animate()
-
