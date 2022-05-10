@@ -268,6 +268,26 @@ window.addEventListener("wheel", event => { //https://stackoverflow.com/question
   } 
 });
 
+$('window').on('touchmove', function(event) {
+
+  event.preventDefault(); 
+
+  var distanceY = window.pageYOffset
+  if (distanceY > 0) {
+    scroll+=distanceY;
+    if (scroll<0)
+    {
+      scroll=0;
+    }
+    if (scroll > 197){
+      scroll=197;
+    }
+    if (scroll==120){
+      scroll+=distanceY;
+    } 
+  }
+});
+
 //FANCY RENDERING
 const composer = new EffectComposer(renderer);
 composer.setSize(window.innerWidth,window.innerHeight);
